@@ -1,0 +1,744 @@
+css
+/* =========================================================
+   SFV-X MOVIES — CATEGORIES PAGE
+   File: categories.css
+
+   Theme:
+   Deep Black + White + Premium Neon Purple
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --black-main: #020202;
+    --black-soft: #070707;
+    --card-black: #0a0a0a;
+    --card-hover: #101010;
+
+    --white: #ffffff;
+    --white-soft: #bdbdbd;
+
+    --border: rgba(255, 255, 255, 0.09);
+    --border-hover: rgba(255, 255, 255, 0.20);
+
+    --purple: #8b3dff;
+    --purple-light: #a86cff;
+    --purple-soft: rgba(139, 61, 255, 0.22);
+    --purple-faint: rgba(139, 61, 255, 0.10);
+
+    --shadow: rgba(0, 0, 0, 0.75);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    position: relative;
+
+    min-height: 100vh;
+
+    font-family: "Cairo", sans-serif;
+
+    color: var(--white);
+
+    overflow-x: hidden;
+
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(139, 61, 255, 0.12),
+            transparent 30%
+        ),
+        linear-gradient(
+            180deg,
+            #020202 0%,
+            #030303 45%,
+            #010101 100%
+        );
+}
+
+/* =========================================================
+   PREMIUM PURPLE BACKGROUND GLOW
+========================================================= */
+
+body::before {
+    content: "";
+
+    position: fixed;
+
+    width: 700px;
+    height: 700px;
+
+    top: -420px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(139, 61, 255, 0.18) 0%,
+            rgba(139, 61, 255, 0.08) 35%,
+            transparent 70%
+        );
+
+    filter: blur(35px);
+
+    pointer-events: none;
+
+    z-index: -2;
+
+    animation:
+        purpleGlow 12s ease-in-out infinite;
+}
+
+body::after {
+    content: "";
+
+    position: fixed;
+
+    width: 520px;
+    height: 520px;
+
+    right: -250px;
+    bottom: -220px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(139, 61, 255, 0.12) 0%,
+            rgba(139, 61, 255, 0.05) 35%,
+            transparent 70%
+        );
+
+    filter: blur(45px);
+
+    pointer-events: none;
+
+    z-index: -2;
+
+    animation:
+        purpleGlowSecondary 15s ease-in-out infinite;
+}
+
+/* =========================================================
+   PURPLE BACKGROUND MOTION
+========================================================= */
+
+@keyframes purpleGlow {
+
+    0% {
+        transform:
+            translateX(-50%)
+            translateY(0)
+            scale(1);
+    }
+
+    50% {
+        transform:
+            translateX(-50%)
+            translateY(35px)
+            scale(1.08);
+    }
+
+    100% {
+        transform:
+            translateX(-50%)
+            translateY(0)
+            scale(1);
+    }
+}
+
+@keyframes purpleGlowSecondary {
+
+    0% {
+        transform:
+            translate(0, 0)
+            scale(1);
+    }
+
+    50% {
+        transform:
+            translate(-25px, -25px)
+            scale(1.08);
+    }
+
+    100% {
+        transform:
+            translate(0, 0)
+            scale(1);
+    }
+}
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.categories-page {
+    width: min(1200px, 92%);
+
+    min-height: 100vh;
+
+    margin: 0 auto;
+
+    padding: 75px 0 90px;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.categories-header {
+    text-align: center;
+
+    margin-bottom: 55px;
+
+    animation:
+        headerReveal 0.8s ease both;
+}
+
+.categories-header h1 {
+    font-size:
+        clamp(3rem, 7vw, 5.8rem);
+
+    font-weight: 900;
+
+    line-height: 1;
+
+    letter-spacing: -2px;
+
+    color: var(--white);
+
+    text-shadow:
+        0 5px 25px rgba(0, 0, 0, 0.8);
+}
+
+.categories-header p {
+    margin-top: 18px;
+
+    font-size:
+        clamp(1rem, 2vw, 1.35rem);
+
+    font-weight: 600;
+
+    color: var(--white-soft);
+
+    text-shadow:
+        0 3px 15px rgba(0, 0, 0, 0.8);
+}
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.categories-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 24px;
+}
+
+/* =========================================================
+   CATEGORY CARD
+========================================================= */
+
+.category-card {
+    position: relative;
+
+    min-height: 210px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 24px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.035),
+            rgba(255, 255, 255, 0.008)
+        ),
+        var(--card-black);
+
+    color: var(--white);
+
+    cursor: pointer;
+
+    overflow: hidden;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 15px;
+
+    font-family: inherit;
+
+    box-shadow:
+        0 20px 50px var(--shadow),
+        inset 0 1px 0
+        rgba(255, 255, 255, 0.035);
+
+    transition:
+        transform 0.35s ease,
+        background 0.35s ease,
+        border-color 0.35s ease,
+        box-shadow 0.35s ease;
+}
+
+/* =========================================================
+   PURPLE BETWEEN CARDS
+========================================================= */
+
+.category-card::after {
+    content: "";
+
+    position: absolute;
+
+    inset: -2px;
+
+    border-radius: inherit;
+
+    background:
+        radial-gradient(
+            circle at 50% 50%,
+            rgba(139, 61, 255, 0.10),
+            transparent 65%
+        );
+
+    opacity: 0;
+
+    z-index: 0;
+
+    pointer-events: none;
+
+    transition:
+        opacity 0.35s ease;
+}
+
+.category-card:hover::after {
+    opacity: 1;
+}
+
+/* =========================================================
+   CARD TOP LIGHT
+========================================================= */
+
+.category-card::before {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(255, 255, 255, 0.055),
+            transparent 55%
+        );
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    transition:
+        opacity 0.35s ease;
+}
+
+.category-card:hover::before {
+    opacity: 1;
+}
+
+/* =========================================================
+   HOVER
+========================================================= */
+
+.category-card:hover {
+    transform:
+        translateY(-8px)
+        scale(1.015);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.055),
+            rgba(255, 255, 255, 0.01)
+        ),
+        var(--card-hover);
+
+    border-color:
+        var(--border-hover);
+
+    box-shadow:
+        0 28px 70px
+        rgba(0, 0, 0, 0.85),
+
+        0 0 35px
+        rgba(139, 61, 255, 0.08);
+}
+
+/* =========================================================
+   ACTIVE
+========================================================= */
+
+.category-card:active {
+    transform:
+        translateY(-3px)
+        scale(0.99);
+}
+
+/* =========================================================
+   ICON
+========================================================= */
+
+.category-icon {
+    position: relative;
+
+    z-index: 2;
+
+    width: 72px;
+    height: 72px;
+
+    border-radius: 20px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 2.1rem;
+
+    background:
+        rgba(255, 255, 255, 0.045);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.10);
+
+    color: var(--white);
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255, 255, 255, 0.06),
+
+        0 10px 28px
+        rgba(0, 0, 0, 0.45);
+
+    transition:
+        transform 0.3s ease,
+        background 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.category-card:hover .category-icon {
+    transform:
+        scale(1.08)
+        rotate(-2deg);
+
+    background:
+        rgba(255, 255, 255, 0.075);
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255, 255, 255, 0.08),
+
+        0 12px 30px
+        rgba(0, 0, 0, 0.5),
+
+        0 0 22px
+        rgba(139, 61, 255, 0.10);
+}
+
+/* =========================================================
+   ANIME
+========================================================= */
+
+.anime-icon {
+    font-family:
+        "Orbitron",
+        sans-serif;
+
+    font-size: 1.35rem;
+
+    font-weight: 900;
+
+    letter-spacing: 1px;
+
+    color: #ffffff;
+}
+
+/* =========================================================
+   DILINGO
+========================================================= */
+
+.dilingo-symbol {
+    font-size: 2rem;
+
+    font-weight: 900;
+
+    color: #ffffff;
+}
+
+/* =========================================================
+   CARTOON & ANIMATION
+   Teddy Bear Emoji
+========================================================= */
+
+.category-card:nth-child(5) .category-icon {
+    font-size: 2.5rem;
+
+    color: initial;
+
+    background:
+        rgba(255, 255, 255, 0.045);
+}
+
+/* =========================================================
+   TEXT
+========================================================= */
+
+.category-name {
+    position: relative;
+
+    z-index: 2;
+
+    font-size: 1.35rem;
+
+    font-weight: 800;
+
+    color: #ffffff;
+
+    text-shadow:
+        0 3px 15px
+        rgba(0, 0, 0, 0.7);
+}
+
+.category-hint {
+    position: absolute;
+
+    top: 15px;
+    right: 17px;
+
+    z-index: 3;
+
+    padding:
+        5px 10px;
+
+    border-radius: 999px;
+
+    font-size: 0.72rem;
+
+    font-weight: 700;
+
+    color: #ffffff;
+
+    background:
+        rgba(255, 255, 255, 0.055);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.10);
+
+    box-shadow:
+        0 5px 15px
+        rgba(0, 0, 0, 0.35);
+}
+
+/* =========================================================
+   FEATURED MOVIES
+========================================================= */
+
+.category-card.featured {
+    border-color:
+        rgba(255, 255, 255, 0.17);
+
+    box-shadow:
+        0 22px 60px
+        rgba(0, 0, 0, 0.80),
+
+        0 0 30px
+        rgba(139, 61, 255, 0.08);
+}
+
+.category-card.featured .category-icon {
+    background:
+        rgba(255, 255, 255, 0.07);
+}
+
+/* =========================================================
+   HEADER ANIMATION
+========================================================= */
+
+@keyframes headerReveal {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(-25px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+}
+
+/* =========================================================
+   CARD ENTRANCE
+========================================================= */
+
+.category-card {
+    animation:
+        cardReveal 0.65s ease both;
+}
+
+.category-card:nth-child(1) {
+    animation-delay: 0.08s;
+}
+
+.category-card:nth-child(2) {
+    animation-delay: 0.16s;
+}
+
+.category-card:nth-child(3) {
+    animation-delay: 0.24s;
+}
+
+.category-card:nth-child(4) {
+    animation-delay: 0.32s;
+}
+
+.category-card:nth-child(5) {
+    animation-delay: 0.40s;
+}
+
+.category-card:nth-child(6) {
+    animation-delay: 0.48s;
+}
+
+@keyframes cardReveal {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(30px)
+            scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+    }
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 850px) {
+
+    .categories-page {
+        width:
+            min(700px, 90%);
+
+        padding-top: 55px;
+    }
+
+    .categories-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 560px) {
+
+    .categories-page {
+        width: 92%;
+
+        padding:
+            45px 0 65px;
+    }
+
+    .categories-header {
+        margin-bottom: 38px;
+    }
+
+    .categories-header h1 {
+        letter-spacing: -1px;
+    }
+
+    .categories-header p {
+        margin-top: 14px;
+
+        line-height: 1.7;
+    }
+
+    .categories-grid {
+        grid-template-columns: 1fr;
+
+        gap: 16px;
+    }
+
+    .category-card {
+        min-height: 175px;
+
+        border-radius: 20px;
+    }
+
+    .category-icon {
+        width: 64px;
+        height: 64px;
+
+        border-radius: 18px;
+    }
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+
+        animation-duration:
+            0.01ms !important;
+
+        animation-iteration-count:
+            1 !important;
+
+        transition-duration:
+            0.01ms !important;
+
+        scroll-behavior:
+            auto !important;
+    }
+}

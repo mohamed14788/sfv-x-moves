@@ -1,0 +1,1264 @@
+<!--
+==========================================================
+Project : SFV-X Movies Empire (Global Version)
+Architect : Muhammad Wael
+Version : 2.0
+Part : 1 / 10
+Core Structure
+==========================================================
+-->
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+    <!-- ترميز الصفحة -->
+    <meta charset="UTF-8">
+
+    <!-- توافق جميع الشاشات -->
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <!-- عنوان الموقع -->
+
+    <title>
+
+        إمبراطورية أفلام SFV-X | عالم الترفيه المتكامل
+
+    </title>
+
+    <!-- SEO -->
+
+    <meta
+        name="description"
+        content="منصة SFV-X للأفلام والمسلسلات والأنمي والدونغهوا والكرتون والملخصات">
+
+    <meta
+        name="keywords"
+        content="SFV-X, Movies, Anime, Donghua, Cartoon, Series">
+
+    <meta
+        name="author"
+        content="Muhammad Wael">
+
+    <meta
+        name="theme-color"
+        content="#090909">
+
+    <!-- Open Graph -->
+
+    <meta property="og:title"
+        content="SFV-X Movies Empire">
+
+    <meta property="og:description"
+        content="منصة احترافية للأفلام والمسلسلات والأنمي">
+
+    <meta property="og:type"
+        content="website">
+
+    <!-- Favicon -->
+
+    <link
+        rel="icon"
+        href="images/logo.png">
+
+    <!-- خطوط -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Orbitron:wght@400;700;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- ملف CSS -->
+
+    <link
+        rel="stylesheet"
+        href="movies_style.css">
+
+</head>
+
+<body class="dark-theme">
+
+<!-- ===================================================== -->
+<!-- Loading Screen -->
+<!-- ===================================================== -->
+
+<div id="loading-screen">
+
+    <div class="loading-logo">
+
+        <h1>
+
+            SFV-X
+
+        </h1>
+
+        <span>
+
+            MOVIES
+
+        </span>
+
+    </div>
+
+    <div class="loading-bar">
+
+        <div class="loading-progress"></div>
+
+    </div>
+
+</div>
+
+<!-- ===================================================== -->
+<!-- Animated Background -->
+<!-- ===================================================== -->
+
+<div id="movies_particles_container">
+
+    <canvas id="movies_particles"></canvas>
+
+</div>
+<!-- ===================================================== -->
+<!-- SFV-X INTRO SCREEN -->
+<!-- Part 2 / 10 -->
+<!-- ===================================================== -->
+
+<section id="sfvx-intro-screen">
+
+    <div class="intro-overlay"></div>
+
+    <div class="intro-container">
+
+        <!-- صورة البداية -->
+
+        <div class="intro-image">
+
+            <img
+                src="images/start-banner.jpg"
+                alt="SFV-X Movies">
+
+        </div>
+
+        <!-- النص -->
+
+        <div class="intro-info">
+
+            <h1>
+
+                مرحباً بك في
+
+                <span>
+
+                    SFV-X MOVIES
+
+                </span>
+
+            </h1>
+
+            <p>
+
+                أكبر منصة عربية للأفلام والمسلسلات والأنمي
+                والدونغهوا والكرتون والملخصات.
+
+            </p>
+
+        </div>
+
+        <!-- زر البداية -->
+
+        <div class="intro-actions">
+
+            <button
+                id="startNowBtn"
+                class="start-button">
+
+                <i class="fas fa-play-circle"></i>
+
+                ابدأ الآن
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ===================================================== -->
+<!-- END PART 2 -->
+<!-- ===================================================== -->
+ <!-- ===================================================== -->
+<!-- HEADER -->
+<!-- Part 3 / 10 -->
+<!-- ===================================================== -->
+
+<header class="sfvx-main-header">
+
+    <div class="header-glass-effect"></div>
+
+    <div class="header-content">
+
+        <!-- اللوجو -->
+
+        <div class="logo-area">
+
+            <a href="index.html" class="home-trigger">
+
+                <i class="fas fa-house"></i>
+
+            </a>
+
+            <h1 class="main-neon-logo">
+
+                SFV-X
+
+                <span class="glitch" data-text="MOVIES">
+
+                    MOVIES
+
+                </span>
+
+            </h1>
+
+        </div>
+
+        <!-- البحث -->
+
+        <div class="search-engine-wrapper">
+
+            <div class="search-bar">
+
+                <i class="fas fa-search search-icon"></i>
+
+                <input
+                    type="text"
+                    id="main-search-input"
+                    placeholder="ابحث عن فيلم، مسلسل، أنمي، دونغهوا...">
+
+                <button class="voice-search">
+
+                    <i class="fas fa-microphone"></i>
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- أدوات المستخدم -->
+
+        <div class="user-control-panel">
+
+            <!-- XP -->
+
+            <div class="xp-progress-container">
+
+                <div class="xp-info">
+
+                    <span class="xp-label">
+
+                        XP
+
+                    </span>
+
+                    <span id="current-xp-value">
+
+                        0
+
+                    </span>
+
+                </div>
+
+                <div class="xp-bar-outer">
+
+                    <div
+                        class="xp-bar-inner"
+                        style="width:0%;">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- إشعارات -->
+
+            <button class="header-icon">
+
+                <i class="fas fa-bell"></i>
+
+            </button>
+
+            <!-- مفضلة -->
+
+            <button class="header-icon">
+
+                <i class="fas fa-heart"></i>
+
+            </button>
+
+            <!-- الملف الشخصي -->
+
+            <button class="header-icon">
+
+                <i class="fas fa-user-circle"></i>
+
+            </button>
+
+            <!-- القائمة -->
+
+            <button
+                class="mobile-menu-toggle"
+                id="menu-trigger">
+
+                <span class="bar"></span>
+
+                <span class="bar"></span>
+
+                <span class="bar"></span>
+
+            </button>
+
+        </div>
+
+    </div>
+
+</header>
+
+<!-- ===================================================== -->
+<!-- SIDEBAR -->
+<!-- ===================================================== -->
+
+<aside
+    class="sfvx-sidebar"
+    id="main-sidebar">
+</aside>
+
+<!-- ===================================================== -->
+<!-- END PART 3 -->
+<!-- ===================================================== -->
+ <!-- ==================================================== -->
+<!-- MAIN CONTENT -->
+<!-- Part 4 / 10 -->
+<!-- ===================================================== -->
+
+<main class="sfvx-main-content">
+
+    <!-- Hero Section -->
+
+    <section class="hero-welcome-section">
+
+        <div class="welcome-text">
+
+            <h2>
+
+                أهلاً بك في
+
+                <span class="highlight">
+
+                    SFV-X
+
+                </span>
+
+            </h2>
+
+            <p>
+
+                استمتع بآلاف الأفلام والمسلسلات والأنمي والدونغهوا
+                بجودة عالية وسرعة فائقة.
+
+            </p>
+
+        </div>
+
+        <div class="hero-buttons">
+
+            <button class="watch-now-btn">
+
+                <i class="fas fa-play"></i>
+
+                مشاهدة الآن
+
+            </button>
+
+            <button class="discover-btn">
+
+                <i class="fas fa-fire"></i>
+
+                الأكثر مشاهدة
+
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- Movie Grid -->
+
+    <section class="movies-display-area">
+
+        <div class="section-title">
+
+            <h2>
+
+                أحدث الإضافات
+
+            </h2>
+
+        </div>
+
+        <div
+            class="sfvx-grid-wrapper"
+            id="dynamic-movie-grid">
+
+            <!-- Movie Card -->
+
+            <div class="movie-card">
+
+                <div class="poster-container">
+
+                    <img
+                        src="images/posters/movie1.jpg"
+                        alt="Movie">
+
+                    <span class="quality-tag">
+
+                        4K
+
+                    </span>
+
+                    <span class="rating-tag">
+
+                        ⭐ 9.6
+
+                    </span>
+
+                </div>
+
+                <div class="movie-info">
+
+                    <h3>
+
+                        اسم الفيلم
+
+                    </h3>
+
+                    <p>
+
+                        أكشن • 2025
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- Movie Card -->
+
+            <div class="movie-card">
+
+                <div class="poster-container">
+
+                    <img
+                        src="images/posters/movie2.jpg"
+                        alt="Movie">
+
+                    <span class="quality-tag">
+
+                        FHD
+
+                    </span>
+
+                    <span class="rating-tag">
+
+                        ⭐ 8.9
+
+                    </span>
+
+                </div>
+
+                <div class="movie-info">
+
+                    <h3>
+
+                        اسم الفيلم
+
+                    </h3>
+
+                    <p>
+
+                        رعب • 2024
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- سيتم إنشاء باقي البطاقات بالجافاسكريبت -->
+
+        </div>
+
+    </section>
+
+    <!-- زر تحميل المزيد -->
+
+    <div class="load-more-container">
+
+        <button
+            id="load-more-trigger"
+            class="neon-load-btn">
+
+            تحميل المزيد
+
+            <i class="fas fa-chevron-down"></i>
+
+        </button>
+
+    </div>
+
+</main>
+
+<!-- ===================================================== -->
+<!-- END PART 4 -->
+<!-- ===================================================== -->
+
+ <!-- ===================================================== -->
+<!-- MOVIES DISPLAY -->
+<!-- Part 6 / 10 -->
+<!-- ===================================================== -->
+
+<section class="movies-display-area">
+
+    <div class="grid-controls">
+
+        <span class="results-count">
+            تم العثور على
+            <b id="total-movies-count">120</b>
+            عنصر
+        </span>
+
+        <div class="sort-options">
+
+            <label>ترتيب حسب</label>
+
+            <select id="movie-sort">
+                <option value="latest">الأحدث</option>
+                <option value="top-rated">الأعلى تقييماً</option>
+                <option value="most-watched">الأكثر مشاهدة</option>
+                <option value="alphabet">A-Z</option>
+            </select>
+
+        </div>
+
+    </div>
+
+    <div class="sfvx-grid-wrapper" id="dynamic-movie-grid">
+
+        <!-- Movie Card -->
+
+        <div class="movie-card">
+
+            <div class="poster-container">
+
+                <span class="quality-tag">4K</span>
+                <span class="episode-tag">Movie</span>
+
+                <img src="images/movie1.jpg" alt="Movie">
+
+                <div class="poster-overlay">
+
+                    <button class="play-btn">
+                        <i class="fas fa-play"></i>
+                    </button>
+
+                    <button class="favorite-btn">
+                        <i class="fas fa-heart"></i>
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="movie-info">
+
+                <h4>Dead Silence</h4>
+
+                <div class="movie-meta">
+                    <span>2007</span>
+                    <span>Horror</span>
+                </div>
+
+                <div class="movie-rating">
+                    <i class="fas fa-star"></i>
+                    8.9
+                </div>
+
+                <div class="xp-reward">
+                    +20 XP
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Movie Card -->
+
+        <div class="movie-card">
+
+            <div class="poster-container">
+
+                <span class="quality-tag">FHD</span>
+                <span class="episode-tag">Anime</span>
+
+                <img src="images/movie2.jpg" alt="Anime">
+
+                <div class="poster-overlay">
+
+                    <button class="play-btn">
+                        <i class="fas fa-play"></i>
+                    </button>
+
+                    <button class="favorite-btn">
+                        <i class="fas fa-heart"></i>
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="movie-info">
+
+                <h4>Demon Slayer</h4>
+
+                <div class="movie-meta">
+                    <span>2024</span>
+                    <span>Anime</span>
+                </div>
+
+                <div class="movie-rating">
+                    <i class="fas fa-star"></i>
+                    9.8
+                </div>
+
+                <div class="xp-reward">
+                    +35 XP
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- يتم إنشاء باقي الكروت بواسطة JavaScript -->
+
+    </div>
+
+    <div class="load-more-container">
+
+        <button class="neon-load-btn" id="load-more-trigger">
+
+            <span>تحميل المزيد</span>
+
+            <i class="fas fa-chevron-down"></i>
+
+        </button>
+
+    </div>
+
+</section>
+
+<!-- ===================================================== -->
+<!-- END PART 6 -->
+<!-- ===================================================== -->
+
+<!-- ===================================================== -->
+<!-- CONTENT SECTIONS -->
+<!-- Part 7 / 10 -->
+<!-- ===================================================== -->
+
+<!-- ========================= -->
+<!-- Trending Now -->
+<!-- ========================= -->
+
+<section class="trending-section">
+
+    <div class="section-header">
+
+        <h2>
+            <i class="fas fa-fire"></i>
+            الأكثر مشاهدة الآن
+        </h2>
+
+        <a href="#" class="view-all">
+            عرض الكل
+            <i class="fas fa-arrow-left"></i>
+        </a>
+
+    </div>
+
+    <div class="horizontal-slider" id="trending-slider">
+
+        <!-- يتم ملؤه بالجافاسكربت -->
+
+    </div>
+
+</section>
+
+<!-- ========================= -->
+<!-- Latest Movies -->
+<!-- ========================= -->
+
+<section class="latest-movies-section">
+
+    <div class="section-header">
+
+        <h2>
+            <i class="fas fa-film"></i>
+            أحدث الأفلام
+        </h2>
+
+        <a href="#" class="view-all">
+            عرض الكل
+        </a>
+
+    </div>
+
+    <div class="movie-row" id="latestMovies"></div>
+
+</section>
+
+<!-- ========================= -->
+<!-- Latest Series -->
+<!-- ========================= -->
+
+<section class="latest-series-section">
+
+    <div class="section-header">
+
+        <h2>
+            <i class="fas fa-tv"></i>
+            أحدث المسلسلات
+        </h2>
+
+        <a href="#" class="view-all">
+            عرض الكل
+        </a>
+
+    </div>
+
+    <div class="movie-row" id="latestSeries"></div>
+
+</section>
+
+<!-- ========================= -->
+<!-- Anime -->
+<!-- ========================= -->
+
+<section class="anime-section">
+
+    <div class="section-header">
+
+        <h2>
+            <i class="fas fa-dragon"></i>
+            أحدث الأنمي
+        </h2>
+
+        <a href="#" class="view-all">
+            عرض الكل
+        </a>
+
+    </div>
+
+    <div class="movie-row" id="animeContainer"></div>
+
+</section>
+
+<!-- ========================= -->
+<!-- Donghua -->
+<!-- ========================= -->
+
+<section class="donghua-section">
+
+    <div class="section-header">
+
+        <h2>
+            <i class="fas fa-yin-yang"></i>
+            أحدث الدونغهوا
+        </h2>
+
+        <a href="#" class="view-all">
+            عرض الكل
+        </a>
+
+    </div>
+
+    <div class="movie-row" id="donghuaContainer"></div>
+
+</section>
+
+<!-- ========================= -->
+<!-- Cartoon -->
+<!-- ========================= -->
+
+<section class="cartoon-section">
+
+    <div class="section-header">
+
+        <h2>
+            <i class="fas fa-child"></i>
+            الكرتون والأنيميشن
+        </h2>
+
+        <a href="#" class="view-all">
+            عرض الكل
+        </a>
+
+    </div>
+
+    <div class="movie-row" id="cartoonContainer"></div>
+
+</section>
+
+<!-- ========================= -->
+<!-- Movie Summaries -->
+<!-- ========================= -->
+
+<section class="summary-section">
+
+    <div class="section-header">
+
+        <h2>
+            <i class="fas fa-file-video"></i>
+            ملخصات الأفلام
+        </h2>
+
+        <a href="#" class="view-all">
+            عرض الكل
+        </a>
+
+    </div>
+
+    <div class="movie-row" id="summaryContainer"></div>
+
+</section>
+
+<!-- ========================= -->
+<!-- Continue Watching -->
+<!-- ========================= -->
+
+<section class="continue-section">
+
+    <div class="section-header">
+
+        <h2>
+            <i class="fas fa-clock-rotate-left"></i>
+            أكمل المشاهدة
+        </h2>
+
+    </div>
+
+    <div class="movie-row" id="continueWatching"></div>
+
+</section>
+
+<!-- ===================================================== -->
+<!-- END PART 7 -->
+<!-- ===================================================== -->
+ 
+
+ <!-- ===================================================== -->
+<!-- EXTRA FEATURES -->
+<!-- Part 9 / 10 -->
+<!-- ===================================================== -->
+
+<!-- ========================= -->
+<!-- Advertisements -->
+<!-- ========================= -->
+
+<section class="ads-section">
+
+    <div class="section-header">
+
+        <h2>
+
+            <i class="fas fa-bullhorn"></i>
+
+            العروض والإعلانات
+
+        </h2>
+
+    </div>
+
+    <div class="ads-grid">
+
+        <div class="ad-card large-ad">
+
+            <img
+                src="images/ad-banner-1.jpg"
+                alt="Advertisement">
+
+        </div>
+
+        <div class="ad-card">
+
+            <img
+                src="images/ad-1.jpg"
+                alt="Ad">
+
+        </div>
+
+        <div class="ad-card">
+
+            <img
+                src="images/ad-2.jpg"
+                alt="Ad">
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ========================= -->
+<!-- Live Counters -->
+<!-- ========================= -->
+
+<section class="live-counters-section">
+
+    <div class="counters-wrapper">
+
+        <div class="counter-card">
+
+            <div class="counter-icon">
+
+                <i class="fas fa-users"></i>
+
+            </div>
+
+            <div class="counter-data">
+
+                <span
+                    id="daily-visitors"
+                    class="counter-number">
+
+                    1402
+
+                </span>
+
+                <span class="counter-label">
+
+                    زوار اليوم
+
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="counter-card highlight-gold">
+
+            <div class="counter-icon">
+
+                <i class="fas fa-chart-line"></i>
+
+            </div>
+
+            <div class="counter-data">
+
+                <span
+                    id="monthly-hits"
+                    class="counter-number">
+
+                    45890
+
+                </span>
+
+                <span class="counter-label">
+
+                    زيارات الشهر
+
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="counter-card pulse-neon">
+
+            <div class="counter-icon">
+
+                <i class="fas fa-eye"></i>
+
+            </div>
+
+            <div class="counter-data">
+
+                <span
+                    id="live-users-count"
+                    class="counter-number">
+
+                    158
+
+                </span>
+
+                <span class="counter-label">
+
+                    يشاهدون الآن
+
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="counter-card">
+
+            <div class="counter-icon">
+
+                <i class="fas fa-film"></i>
+
+            </div>
+
+            <div class="counter-data">
+
+                <span
+                    id="movies-counter"
+                    class="counter-number">
+
+                    10235
+
+                </span>
+
+                <span class="counter-label">
+
+                    إجمالي المحتوى
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ========================= -->
+<!-- Back To Top -->
+<!-- ========================= -->
+
+<div
+    class="back-to-top"
+    id="scroll-to-top">
+
+    <i class="fas fa-chevron-up"></i>
+
+</div>
+
+<!-- ===================================================== -->
+<!-- END PART 9 -->
+<!-- ===================================================== -->
+ <!-- ===================================================== -->
+<!-- FOOTER -->
+<!-- Part 10 / 10 -->
+<!-- ===================================================== -->
+
+<footer class="sfvx-footer">
+
+    <!-- Back To Top -->
+
+    <div class="footer-top">
+
+        <button id="scrollTopFooter">
+
+            <i class="fas fa-arrow-up"></i>
+
+            العودة للأعلى
+
+        </button>
+
+    </div>
+
+    <!-- Footer Links -->
+
+    <div class="footer-links-grid">
+
+        <!-- About -->
+
+        <div class="footer-col">
+
+            <h3>SFV-X</h3>
+
+            <ul>
+
+                <li><a href="#">من نحن</a></li>
+
+                <li><a href="#">سياسة الخصوصية</a></li>
+
+                <li><a href="#">شروط الاستخدام</a></li>
+
+                <li><a href="#">تواصل معنا</a></li>
+
+            </ul>
+
+        </div>
+
+        <!-- Categories -->
+
+        <div class="footer-col">
+
+            <h3>التصنيفات</h3>
+
+            <ul>
+
+                <li><a href="#">أفلام</a></li>
+
+                <li><a href="#">مسلسلات</a></li>
+
+                <li><a href="#">أنمي</a></li>
+
+                <li><a href="#">دونغهوا</a></li>
+
+                <li><a href="#">كرتون</a></li>
+
+            </ul>
+
+        </div>
+
+        <!-- Account -->
+
+        <div class="footer-col">
+
+            <h3>حسابك</h3>
+
+            <ul>
+
+                <li><a href="#">الملف الشخصي</a></li>
+
+                <li><a href="#">المفضلة</a></li>
+
+                <li><a href="#">المشاهدة لاحقاً</a></li>
+
+                <li><a href="#">الإنجازات</a></li>
+
+                <li><a href="#">متجر XP</a></li>
+
+            </ul>
+
+        </div>
+
+        <!-- Social -->
+
+        <div class="footer-col">
+
+            <h3>تابعنا</h3>
+
+            <div class="social-icons">
+
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-discord"></i></a>
+                <a href="#"><i class="fab fa-tiktok"></i></a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Copyright -->
+
+    <div class="footer-bottom">
+
+        <p>
+
+            © 2026 SFV-X Movies Empire — جميع الحقوق محفوظة |
+            Design & Development by Muhammad Wael
+
+        </p>
+
+    </div>
+
+</footer>
+
+<!-- ===================================================== -->
+<!-- PAGE LOADER -->
+<!-- ===================================================== -->
+
+<div id="pageLoader">
+
+    <div class="loader-circle"></div>
+
+    <span>Loading...</span>
+
+</div>
+
+<!-- ===================================================== -->
+<!-- NOTIFICATION BOX -->
+<!-- ===================================================== -->
+
+<div id="notificationBox"></div>
+
+<!-- ===================================================== -->
+<!-- AUDIO -->
+<!-- ===================================================== -->
+
+<audio id="clickSound" preload="auto">
+
+    <source
+        src="sounds/click.mp3"
+        type="audio/mpeg">
+
+</audio>
+
+<!-- ===================================================== -->
+<!-- EXTERNAL LIBRARIES -->
+<!-- ===================================================== -->
+
+<!-- Particles -->
+
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+<!-- GSAP -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+<!-- AOS -->
+
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+<!-- Swiper -->
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<!-- ===================================================== -->
+<!-- SFV-X MAIN SCRIPT -->
+<!-- ===================================================== -->
+
+<script src="movies_script.js"></script>
+
+</body>
+</html>
+
+<!-- ===================================================== -->
+<!-- END PART 10 -->
+<!-- ===================================================== -->
+ 
