@@ -1,14 +1,213 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr" id="htmlTag">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0; url=صفحه الاعاب/الصفحة الرئيسية/movies.html">
-    <title>جاري التحويل...</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Welcome to Movie Hub - Explore and watch the best movies and films.">
+    <meta name="keywords" content="movies, films, streaming, watch online">
+    <meta name="author" content="Movie Hub">
+    <title id="pageTitle">مكتبة الأفلام - Movies Hub</title>
+    <style>
+        body {
+            background-color: #0d1117;
+            color: #ffffff;
+            font-family: Tahoma, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .container {
+            padding: 40px;
+            background: #161b22;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            max-width: 480px;
+            width: 90%;
+        }
+        .lang-select-box {
+            margin-bottom: 20px;
+        }
+        .lang-select-box select {
+            background: #21262d;
+            color: #c9d1d9;
+            border: 1px solid #30363d;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        h1 {
+            margin-bottom: 15px;
+            color: #58a6ff;
+            font-size: 28px;
+        }
+        p {
+            color: #c9d1d9; 
+            margin-bottom: 25px;
+            font-size: 16px;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #238636;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+        .btn:hover {
+            background-color: #2ea043;
+        }
+        .lang-badge {
+            margin-top: 20px;
+            font-size: 13px;
+            color: #8b949e;
+        }
+    </style>
 </head>
 <body>
+    <main class="container">
+        <div class="lang-select-box">
+            <select id="langSwitcher" aria-label="Select Language">
+                <option value="en">English 🌐</option>
+                <option value="ar">العربية 🇸🇦</option>
+                <option value="es">Español</option>
+                <option value="fr">Français</option>
+                <option value="de">Deutsch</option>
+            </select>
+        </div>
+        <h1 id="welcomeText">Welcome to Movies Hub</h1>
+        <p id="descText">Click below to enter the world of films</p>
+        
+        <!-- تم ضبط الرابط هنا ليعمل مباشرة مع المجلدات العربية بشكل آمن -->
+        <a href="صفحه الاعاب/الصفحة الرئيسية/movies.html" class="btn" id="btnText" aria-label="Enter Movies">دخول الأفلام</a>
+        
+        <div class="lang-badge" id="detectedLang">Initializing...</div>
+    </main>
+
     <script>
-        window.location.href = "صفحه الاعاب/الصفحة الرئيسية/movies.html";
+        const welcomeTranslations = {
+            ar: { 
+                welcome: "مرحباً بك في عالم الأفلام", 
+                desc: "اضغط بالأسفل للدخول إلى صفحة الأفلام ومكتبة العروض", 
+                btn: "دخول الأفلام", 
+                dir: "rtl",
+                metaDesc: "مرحباً بك في منصة الأفلام - استكشف وادخل إلى عالم العروض والأفلام."
+            },
+            en: { 
+                welcome: "Welcome to Movies Hub", 
+                desc: "Click below to enter the world of films", 
+                btn: "Enter Movies", 
+                dir: "ltr",
+                metaDesc: "Welcome to Movies Hub - Explore and watch the best films."
+            },
+            es: { 
+                welcome: "Bienvenido a Movies Hub", 
+                desc: "Haz clic abajo para entrar al mundo de las películas", 
+                btn: "Entrar", 
+                dir: "ltr",
+                metaDesc: "Bienvenido a Movies Hub - Explora y mira las mejores películas."
+            },
+            fr: { 
+                welcome: "Bienvenue sur Movies Hub", 
+                desc: "Cliquez ci-dessous pour entrer dans le monde des films", 
+                btn: "Entrer", 
+                dir: "ltr",
+                metaDesc: "Bienvenue sur Movies Hub - Entrez dans le monde des films."
+            },
+            de: { 
+                welcome: "Willkommen bei Movies Hub", 
+                desc: "Klicken Sie unten, um die Welt der Filme zu betreten", 
+                btn: "Ansehen", 
+                dir: "ltr",
+                metaDesc: "Willkommen bei Movies Hub - Entdecken Sie die besten Filme."
+            }
+        };
+
+        const arabicCountries = ['EG', 'SA', 'AE', 'QA', 'KW', 'OM', 'BH', 'JO', 'LB', 'IQ', 'SY', 'YE', 'LY', 'TN', 'DZ', 'MA', 'SD', 'SO'];
+
+        function setLanguage(code, sourceInfo = "Manual") {
+            if (!welcomeTranslations[code]) code = 'en';
+            const t = welcomeTranslations[code];
+
+            document.getElementById('htmlTag').setAttribute('lang', code);
+            document.getElementById('htmlTag').setAttribute('dir', t.dir);
+            document.getElementById('welcomeText').innerText = t.welcome;
+            document.getElementById('descText').innerText = t.desc;
+            document.getElementById('btnText').innerText = t.btn;
+            document.getElementById('langSwitcher').value = code;
+            document.getElementById('detectedLang').innerText = "Language: " + code.toUpperCase() + " (" + sourceInfo + ")";
+
+            const metaDescTag = document.querySelector('meta[name="description"]');
+            if (metaDescTag) {
+                metaDescTag.setAttribute('content', t.metaDesc);
+            }
+        }
+
+        function fallbackToBrowserOrEN(reason) {
+            let browserLang = (navigator.language || 'en').split('-')[0];
+            let finalLang = welcomeTranslations[browserLang] ? browserLang : 'en';
+            setLanguage(finalLang, reason);
+        }
+
+        async function detectCountryByIP() {
+            const apiEndpoints = [
+                { url: 'https://ipapi.co/json/', extractor: data => data.country_code },
+                { url: 'https://ipwho.is/', extractor: data => data.country_code },
+                { url: 'https://api.country.is/', extractor: data => data.country }
+            ];
+
+            for (let api of apiEndpoints) {
+                try {
+                    let response = await fetch(api.url, { signal: AbortSignal.timeout(3000) });
+                    if (!response.ok) continue;
+                    let data = await response.json();
+                    let country = api.extractor(data);
+                    
+                    if (country) {
+                        if (arabicCountries.includes(country)) {
+                            return setLanguage('ar', 'IP Country: ' + country);
+                        } else if (welcomeTranslations[country.toLowerCase()]) {
+                            return setLanguage(country.toLowerCase(), 'IP Country: ' + country);
+                        } else {
+                            return fallbackToBrowserOrEN('Country non-mapped: ' + country);
+                        }
+                    }
+                } catch (e) {
+                    // الانتقال للـ API التالي لو حدث خطأ
+                }
+            }
+            fallbackToBrowserOrEN('All IPs failed/blocked');
+        }
+
+        // معالجة الرابط تلقائياً لضمان توافق الحروف العربية مع المتصفحات
+        document.addEventListener("DOMContentLoaded", function() {
+            const btn = document.getElementById('btnText');
+            if (btn) {
+                btn.setAttribute('href', encodeURI("صفحه الاعاب/الصفحة الرئيسية/movies.html"));
+            }
+        });
+
+        // التنفيذ عند فتح الصفحة
+        let savedLang = localStorage.getItem('movies_preferred_lang');
+        if (savedLang) {
+            setLanguage(savedLang, "Saved Preference");
+        } else {
+            detectCountryByIP();
+        }
+
+        // التغيير اليدوي عبر القائمة
+        document.getElementById('langSwitcher').addEventListener('change', function(e) {
+            let val = e.target.value;
+            localStorage.setItem('movies_preferred_lang', val);
+            setLanguage(val, "Manual Switch");
+        });
     </script>
-    <p>إذا لم يتم تحويلك تلقائياً، <a href="صفحه الاعاب/الصفحة الرئيسية/movies.html">اضغط هنا للانتقال إلى صفحة الأفلام</a>.</p>
 </body>
 </html>
+
