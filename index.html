@@ -84,8 +84,9 @@
         <h1 id="welcomeText">Welcome to Movies Hub</h1>
         <p id="descText">Click below to enter the world of films</p>
         
-        <!-- تم ضبط الرابط هنا ليعمل مباشرة مع المجلدات العربية بشكل آمن -->
-       <a href="movies-hub/home/movies.html" class="btn" id="btnText">دخول الأفلام</a>
+        <!-- الرابط بالأسماء الإنجليزية الجديدة -->
+        <a href="movies-hub/home/movies.html" class="btn" id="btnText">دخول الأفلام</a>
+        
         <div class="lang-badge" id="detectedLang">Initializing...</div>
     </main>
 
@@ -178,19 +179,11 @@
                         }
                     }
                 } catch (e) {
-                    // الانتقال للـ API التالي لو حدث خطأ
+                    // تخطي
                 }
             }
             fallbackToBrowserOrEN('All IPs failed/blocked');
         }
-
-        // معالجة الرابط تلقائياً لضمان توافق الحروف العربية مع المتصفحات
-        document.addEventListener("DOMContentLoaded", function() {
-            const btn = document.getElementById('btnText');
-            if (btn) {
-                btn.setAttribute('href', encodeURI("صفحه الاعاب/الصفحة الرئيسية/movies.html"));
-            }
-        });
 
         // التنفيذ عند فتح الصفحة
         let savedLang = localStorage.getItem('movies_preferred_lang');
@@ -209,4 +202,3 @@
     </script>
 </body>
 </html>
-
