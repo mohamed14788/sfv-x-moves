@@ -1,0 +1,424 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-main: #070708;
+    --bg-secondary: #0b0a0f;
+
+    --card-bg: rgba(18, 16, 23, 0.92);
+    --card-border: rgba(139, 92, 246, 0.18);
+
+    --purple: #8b5cf6;
+    --purple-light: #a78bfa;
+    --purple-dark: #6d28d9;
+
+    --text-main: #ffffff;
+    --text-secondary: #a9a5b3;
+
+    --shadow-purple:
+        0 0 25px rgba(139, 92, 246, 0.12);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+
+    font-family: "Cairo", sans-serif;
+
+    color: var(--text-main);
+
+    background:
+        radial-gradient(
+            circle at 50% 15%,
+            rgba(109, 40, 217, 0.16),
+            transparent 38%
+        ),
+        radial-gradient(
+            circle at 15% 70%,
+            rgba(139, 92, 246, 0.07),
+            transparent 30%
+        ),
+        var(--bg-main);
+
+    overflow-x: hidden;
+}
+
+
+/* =========================================================
+   BACKGROUND GLOW
+========================================================= */
+
+body::before {
+    content: "";
+
+    position: fixed;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    background:
+        linear-gradient(
+            135deg,
+            transparent 0%,
+            rgba(139, 92, 246, 0.025) 50%,
+            transparent 100%
+        );
+
+    z-index: -1;
+}
+
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.genres-page {
+    width: min(1100px, 92%);
+
+    margin: 0 auto;
+
+    padding: 70px 0 80px;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.genres-header {
+    text-align: center;
+
+    margin-bottom: 55px;
+}
+
+.header-badge {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-width: 90px;
+
+    padding: 7px 18px;
+
+    margin-bottom: 18px;
+
+    border: 1px solid rgba(139, 92, 246, 0.35);
+
+    border-radius: 999px;
+
+    color: var(--purple-light);
+
+    background: rgba(139, 92, 246, 0.07);
+
+    font-family: "Orbitron", sans-serif;
+
+    font-size: 14px;
+    font-weight: 900;
+
+    letter-spacing: 2px;
+
+    box-shadow:
+        0 0 20px rgba(139, 92, 246, 0.08);
+}
+
+.genres-header h1 {
+    font-size: clamp(30px, 5vw, 48px);
+
+    font-weight: 900;
+
+    line-height: 1.2;
+
+    margin-bottom: 12px;
+
+    color: #ffffff;
+
+    text-shadow:
+        0 0 25px rgba(139, 92, 246, 0.18);
+}
+
+.genres-header p {
+    color: var(--text-secondary);
+
+    font-size: 16px;
+
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   GENRES GRID
+========================================================= */
+
+.genres-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 18px;
+}
+
+
+/* =========================================================
+   GENRE CARD
+========================================================= */
+
+.genre-card {
+    position: relative;
+
+    min-height: 155px;
+
+    padding: 24px 15px;
+
+    border: 1px solid var(--card-border);
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(24, 21, 31, 0.96),
+            rgba(12, 11, 16, 0.96)
+        );
+
+    color: var(--text-main);
+
+    cursor: pointer;
+
+    font-family: "Cairo", sans-serif;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 13px;
+
+    transition:
+        transform 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease,
+        background 0.3s ease;
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   PURPLE LIGHT BETWEEN CARDS
+========================================================= */
+
+.genre-card::before {
+    content: "";
+
+    position: absolute;
+
+    width: 90px;
+    height: 90px;
+
+    top: -45px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    background: rgba(139, 92, 246, 0.08);
+
+    filter: blur(30px);
+
+    border-radius: 50%;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   CARD HOVER
+========================================================= */
+
+.genre-card:hover {
+    transform: translateY(-7px);
+
+    border-color:
+        rgba(139, 92, 246, 0.55);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(29, 24, 40, 0.98),
+            rgba(13, 11, 18, 0.98)
+        );
+
+    box-shadow:
+        0 12px 35px rgba(0, 0, 0, 0.45),
+        0 0 25px rgba(139, 92, 246, 0.14);
+}
+
+
+/* =========================================================
+   ICON
+========================================================= */
+
+.genre-icon {
+    position: relative;
+
+    font-size: 43px;
+
+    line-height: 1;
+
+    transition:
+        transform 0.3s ease,
+        filter 0.3s ease;
+}
+
+.genre-card:hover .genre-icon {
+    transform: scale(1.12);
+
+    filter:
+        drop-shadow(
+            0 0 10px rgba(139, 92, 246, 0.25)
+        );
+}
+
+
+/* =========================================================
+   NAME
+========================================================= */
+
+.genre-name {
+    position: relative;
+
+    font-size: 17px;
+
+    font-weight: 800;
+
+    color: #ffffff;
+
+    transition:
+        color 0.3s ease;
+}
+
+.genre-card:hover .genre-name {
+    color: var(--purple-light);
+}
+
+
+/* =========================================================
+   SELECTED
+========================================================= */
+
+.genre-card.selected {
+    border-color: var(--purple);
+
+    box-shadow:
+        0 0 30px rgba(139, 92, 246, 0.25);
+
+    transform: scale(0.97);
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 850px) {
+
+    .genres-grid {
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+    }
+
+}
+
+
+@media (max-width: 620px) {
+
+    .genres-page {
+        width: 92%;
+
+        padding-top: 45px;
+    }
+
+    .genres-header {
+        margin-bottom: 35px;
+    }
+
+    .genres-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 13px;
+    }
+
+    .genre-card {
+        min-height: 135px;
+
+        border-radius: 17px;
+    }
+
+    .genre-icon {
+        font-size: 37px;
+    }
+
+    .genre-name {
+        font-size: 15px;
+    }
+
+}
+
+
+@media (max-width: 360px) {
+
+    .genres-grid {
+        gap: 10px;
+    }
+
+    .genre-card {
+        min-height: 125px;
+    }
+
+    .genre-icon {
+        font-size: 33px;
+    }
+
+    .genre-name {
+        font-size: 14px;
+    }
+
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+.genre-card:focus-visible {
+    outline: 2px solid var(--purple-light);
+
+    outline-offset: 4px;
+}
+
+
+/* =========================================================
+   REDUCE MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    * {
+        scroll-behavior: auto !important;
+
+        transition: none !important;
+    }
+
+}

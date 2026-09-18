@@ -1,0 +1,639 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-main: #050507;
+    --bg-secondary: #09090d;
+    --card: #0d0d12;
+    --card-hover: #13131a;
+
+    --white: #ffffff;
+    --soft-white: #d8d8df;
+    --muted: #8c8c98;
+
+    --purple: #8b5cf6;
+    --purple-light: #a78bfa;
+    --purple-glow: rgba(139, 92, 246, 0.22);
+    --purple-soft: rgba(139, 92, 246, 0.10);
+
+    --border: rgba(255, 255, 255, 0.08);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    font-family: "Cairo", sans-serif;
+    color: var(--white);
+    background:
+        radial-gradient(
+            circle at 50% -10%,
+            rgba(139, 92, 246, 0.16),
+            transparent 38%
+        ),
+        radial-gradient(
+            circle at 10% 50%,
+            rgba(91, 33, 182, 0.07),
+            transparent 30%
+        ),
+        linear-gradient(
+            180deg,
+            #060608 0%,
+            #030304 100%
+        );
+    overflow-x: hidden;
+}
+
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.countries-page {
+    width: min(1180px, 92%);
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 70px 0 90px;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.countries-header {
+    text-align: center;
+    margin-bottom: 48px;
+    animation: headerReveal 0.75s ease both;
+}
+
+.header-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 15px;
+    padding: 5px 14px;
+
+    border: 1px solid rgba(139, 92, 246, 0.28);
+    border-radius: 999px;
+
+    color: var(--purple-light);
+
+    background: rgba(139, 92, 246, 0.06);
+
+    font-family: "Orbitron", sans-serif;
+    font-size: 0.72rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+
+    box-shadow:
+        0 0 20px rgba(139, 92, 246, 0.08);
+}
+
+.countries-header h1 {
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    font-weight: 900;
+    line-height: 1;
+
+    color: #ffffff;
+
+    letter-spacing: -2px;
+
+    text-shadow:
+        0 0 25px rgba(255, 255, 255, 0.06),
+        0 0 55px rgba(139, 92, 246, 0.10);
+}
+
+.countries-header p {
+    margin-top: 17px;
+
+    color: var(--muted);
+
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   COUNTRIES GRID
+========================================================= */
+
+.countries-grid {
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 18px;
+
+    animation: gridReveal 0.8s ease both;
+}
+
+
+/* =========================================================
+   COUNTRY CARD
+========================================================= */
+
+.country-card {
+    position: relative;
+
+    min-height: 185px;
+
+    padding: 22px 14px;
+
+    border: 1px solid var(--border);
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.035),
+            rgba(255, 255, 255, 0.008)
+        ),
+        var(--card);
+
+    color: var(--white);
+
+    cursor: pointer;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    font-family: inherit;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 14px 35px rgba(0, 0, 0, 0.45),
+        inset 0 1px 0 rgba(255, 255, 255, 0.035);
+
+    transition:
+        transform 0.3s ease,
+        border-color 0.3s ease,
+        background 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+
+/* =========================================================
+   PURPLE GLOW
+========================================================= */
+
+.country-card::before {
+    content: "";
+
+    position: absolute;
+
+    width: 180px;
+    height: 180px;
+
+    top: -100px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(139, 92, 246, 0.20),
+            transparent 68%
+        );
+
+    opacity: 0;
+
+    transition: opacity 0.35s ease;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   BOTTOM PURPLE LINE
+========================================================= */
+
+.country-card::after {
+    content: "";
+
+    position: absolute;
+
+    bottom: 0;
+    left: 50%;
+
+    width: 0;
+    height: 2px;
+
+    transform: translateX(-50%);
+
+    background: var(--purple);
+
+    box-shadow:
+        0 0 14px rgba(139, 92, 246, 0.75);
+
+    transition: width 0.35s ease;
+}
+
+
+/* =========================================================
+   HOVER
+========================================================= */
+
+.country-card:hover {
+    transform: translateY(-7px);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(139, 92, 246, 0.07),
+            rgba(255, 255, 255, 0.015)
+        ),
+        var(--card-hover);
+
+    border-color:
+        rgba(139, 92, 246, 0.35);
+
+    box-shadow:
+        0 22px 45px rgba(0, 0, 0, 0.58),
+        0 0 28px rgba(139, 92, 246, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.045);
+}
+
+.country-card:hover::before {
+    opacity: 1;
+}
+
+.country-card:hover::after {
+    width: 55%;
+}
+
+
+/* =========================================================
+   ACTIVE
+========================================================= */
+
+.country-card:active {
+    transform: translateY(-2px) scale(0.985);
+}
+
+
+/* =========================================================
+   FLAG
+========================================================= */
+
+.country-flag {
+    position: relative;
+    z-index: 2;
+
+    display: block;
+
+    font-family: "Apple Color Emoji",
+                 "Segoe UI Emoji",
+                 "Noto Color Emoji",
+                 sans-serif;
+
+    font-size: 3.45rem;
+
+    line-height: 1;
+
+    filter:
+        drop-shadow(
+            0 8px 12px rgba(0, 0, 0, 0.35)
+        );
+
+    transition:
+        transform 0.3s ease,
+        filter 0.3s ease;
+}
+
+.country-card:hover .country-flag {
+    transform: translateY(-3px) scale(1.08);
+
+    filter:
+        drop-shadow(
+            0 10px 18px rgba(0, 0, 0, 0.48)
+        );
+}
+
+
+/* =========================================================
+   COUNTRY NAME
+========================================================= */
+
+.country-name {
+    position: relative;
+    z-index: 2;
+
+    margin-top: 4px;
+
+    color: #ffffff;
+
+    font-size: 1.12rem;
+    font-weight: 800;
+
+    line-height: 1.35;
+}
+
+
+/* =========================================================
+   COUNTRY CODE
+========================================================= */
+
+.country-code {
+    position: relative;
+    z-index: 2;
+
+    color: var(--purple-light);
+
+    font-family: "Orbitron", sans-serif;
+
+    font-size: 0.68rem;
+    font-weight: 900;
+
+    letter-spacing: 1.5px;
+
+    opacity: 0.9;
+}
+
+
+/* =========================================================
+   SELECTED
+========================================================= */
+
+.country-card.selected {
+    transform: translateY(-5px);
+
+    border-color:
+        rgba(167, 139, 250, 0.65);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(139, 92, 246, 0.13),
+            rgba(255, 255, 255, 0.02)
+        ),
+        #0d0b12;
+
+    box-shadow:
+        0 0 35px rgba(139, 92, 246, 0.18),
+        0 20px 45px rgba(0, 0, 0, 0.55);
+}
+
+.country-card.selected::after {
+    width: 70%;
+}
+
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes headerReveal {
+
+    from {
+        opacity: 0;
+        transform: translateY(-25px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+@keyframes gridReveal {
+
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* =========================================================
+   CARD ENTRANCE
+========================================================= */
+
+.country-card {
+    animation: cardReveal 0.55s ease both;
+}
+
+.country-card:nth-child(1) {
+    animation-delay: 0.04s;
+}
+
+.country-card:nth-child(2) {
+    animation-delay: 0.08s;
+}
+
+.country-card:nth-child(3) {
+    animation-delay: 0.12s;
+}
+
+.country-card:nth-child(4) {
+    animation-delay: 0.16s;
+}
+
+.country-card:nth-child(5) {
+    animation-delay: 0.20s;
+}
+
+.country-card:nth-child(6) {
+    animation-delay: 0.24s;
+}
+
+.country-card:nth-child(7) {
+    animation-delay: 0.28s;
+}
+
+.country-card:nth-child(8) {
+    animation-delay: 0.32s;
+}
+
+.country-card:nth-child(9) {
+    animation-delay: 0.36s;
+}
+
+.country-card:nth-child(10) {
+    animation-delay: 0.40s;
+}
+
+.country-card:nth-child(11) {
+    animation-delay: 0.44s;
+}
+
+.country-card:nth-child(12) {
+    animation-delay: 0.48s;
+}
+
+.country-card:nth-child(13) {
+    animation-delay: 0.52s;
+}
+
+.country-card:nth-child(14) {
+    animation-delay: 0.56s;
+}
+
+.country-card:nth-child(15) {
+    animation-delay: 0.60s;
+}
+
+.country-card:nth-child(16) {
+    animation-delay: 0.64s;
+}
+
+.country-card:nth-child(17) {
+    animation-delay: 0.68s;
+}
+
+.country-card:nth-child(18) {
+    animation-delay: 0.72s;
+}
+
+.country-card:nth-child(19) {
+    animation-delay: 0.76s;
+}
+
+.country-card:nth-child(20) {
+    animation-delay: 0.80s;
+}
+
+@keyframes cardReveal {
+
+    from {
+        opacity: 0;
+        transform: translateY(25px) scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 950px) {
+
+    .countries-page {
+        width: min(800px, 90%);
+        padding-top: 55px;
+    }
+
+    .countries-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 650px) {
+
+    .countries-page {
+        width: 92%;
+        padding: 45px 0 65px;
+    }
+
+    .countries-header {
+        margin-bottom: 35px;
+    }
+
+    .countries-header h1 {
+        letter-spacing: -1px;
+    }
+
+    .countries-header p {
+        line-height: 1.7;
+    }
+
+    .countries-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 13px;
+    }
+
+    .country-card {
+        min-height: 160px;
+        border-radius: 17px;
+        padding: 18px 8px;
+    }
+
+    .country-flag {
+        font-size: 2.9rem;
+    }
+
+    .country-name {
+        font-size: 0.98rem;
+    }
+
+    .country-code {
+        font-size: 0.62rem;
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 380px) {
+
+    .countries-grid {
+        gap: 10px;
+    }
+
+    .country-card {
+        min-height: 150px;
+    }
+
+    .country-flag {
+        font-size: 2.65rem;
+    }
+
+    .country-name {
+        font-size: 0.9rem;
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+}
