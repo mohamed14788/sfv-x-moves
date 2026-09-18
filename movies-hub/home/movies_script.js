@@ -211,7 +211,10 @@ function saveUserData() {
 
     );
 
-}// ==========================================
+}
+
+
+// ==========================================
 // 5) حساب مستوى اللاعب
 // ==========================================
 
@@ -471,6 +474,7 @@ function rewardWatching(movie) {
 
 }
 
+
 /*
 ==========================================
 15. نظام فتح وإغلاق السايد بار
@@ -498,2561 +502,722 @@ function toggleSidebar() {
 
 function setupMobileMenu() {
 
-    // يدعم الاسم القديم والجديد للزر
-    const menuButton =
-        document.querySelector(".mobile-menu-toggle") ||
-        document.querySelector(".menu-trigger");
+    const mobileBtn =
+        document.getElementById("mobile-menu-btn");
 
-    if (!menuButton) return;
+    const sidebar =
+        document.getElementById("main-sidebar");
 
-    menuButton.addEventListener("click", function (e) {
 
-        e.stopPropagation();
+    if (!mobileBtn || !sidebar) return;
 
-        toggleSidebar();
+
+    mobileBtn.addEventListener("click", () => {
+
+        sidebar.classList.toggle("active");
 
     });
 
 }
 
-
-
-/*
-==========================================
-17. إغلاق القائمة عند الضغط خارجها
-==========================================
-*/
-
-document.addEventListener("click", function (e) {
-
-    const sidebar = document.getElementById("main-sidebar");
-
-    if (!sidebar) return;
-
-    const menuButton =
-        document.querySelector(".mobile-menu-toggle") ||
-        document.querySelector(".menu-trigger");
-
-    if (
-        sidebar.classList.contains("active") &&
-        !sidebar.contains(e.target) &&
-        menuButton &&
-        !menuButton.contains(e.target)
-    ) {
-
-        sidebar.classList.remove("active");
-
-    }
-
-});
-
 /*
 ==================================================
-مشروع : SFV-X Movies Empire
-الجزء : 2.1
-الوصف : إنشاء كارت الفيلم
+17) نظام الإشعارات
 ==================================================
 */
 
-// ==========================================
-// إنشاء كارت الفيلم
-// ==========================================
+function showNotification(title, message, icon = "fa-bell") {
 
-function createMovieCard(movie) {
+    const container =
+        document.getElementById("notification-container");
 
-    // التأكد من وجود بيانات الفيلم
-    if (!movie) return "";
+    if (!container) return;
 
-    return `
 
-        <div class="movie-card" data-id="${movie.id}">
+    const notification =
+        document.createElement("div");
 
-            <div class="poster-container">
 
-                <span class="quality-tag">
-                    ${movie.quality}
-                </span>
+    notification.className =
+        "notification-item";
 
-                <span class="episode-tag">
-                    ${capitalize(movie.type)}
-                </span>
 
-                <img
-                    src="${movie.poster}"
-                    alt="${movie.title}"
-                    loading="lazy">
+    notification.innerHTML = `
 
-                <div class="poster-overlay">
+        <div class="notification-icon">
 
-                    <button
-                        class="play-btn"
-                        onclick="playMovie(${movie.id})">
-
-                        <i class="fas fa-play"></i>
-
-                    </button>
-
-                    <button
-                        class="favorite-btn"
-                        onclick="toggleFavorite(${movie.id})">
-
-                        <i class="fas fa-heart"></i>
-
-                    </button>
-
-                </div>
-
-            </div>
-
-            <div class="movie-info">
-
-                <h4>${movie.title}</h4>
-
-                <div class="movie-meta">
-
-                    <span>${movie.year}</span>
-
-                    <span>
-                        ${capitalize(movie.type)}
-                    </span>
-
-                </div>
-
-                <div class="movie-rating">
-
-                    <i class="fas fa-star"></i>
-
-                    ${movie.rating}
-
-                </div>
-
-                <div class="xp-reward">
-
-                    +${movie.xp} XP
-
-                </div>
-
-            </div>
+            <i class="fas ${icon}"></i>
 
         </div>
 
-    `;
+        <div class="notification-content">
 
-}
-
-// ==========================================
-// تحويل أول حرف إلى Capital
-// ==========================================
-
-function capitalize(text) {
-
-    if (!text) return "";
-
-    return text.charAt(0).toUpperCase() + text.slice(1);
-
-}
-
-/*
-// ==========================================
-==================================================
-مشروع : SFV-X Movies Empire
-الجزء : 2.2
-الوصف : عرض الأفلام داخل الشبكة
-==================================================
-*/
-
-// ==========================================
-// عدد الأفلام المعروضة في كل مرة
-// ==========================================
-let currentLimit = 12;
-
-// ==========================================
-// عرض الأفلام داخل الشبكة
-// ==========================================
-function renderMovies(list = currentMovies) {
-
-    const grid = document.getElementById("dynamic-movie-grid");
-    const counter = document.getElementById("total-movies-count");
-    const loadMoreBtn = document.getElementById("load-more-trigger");
-
-    if (!grid) return;
-
-    grid.innerHTML = "";
-
-    // تحديث عدد النتائج
-    if (counter) {
-        counter.textContent = list.length;
-    }
-
-    // في حالة عدم وجود نتائج
-    if (list.length === 0) {
-
-        grid.innerHTML = `
-            <div class="no-results">
-                <i class="fas fa-film"></i>
-                <h3>لا توجد نتائج</h3>
-                <p>جرّب البحث أو تغيير التصنيف.</p>
-            </div>
-        `;
-
-        if (loadMoreBtn) {
-            loadMoreBtn.style.display = "none";
-        }
-
-        return;
-    }
-
-    // تحديد عدد الأفلام التي سيتم عرضها
-    const moviesToShow = list.slice(0, currentLimit);
-
-    moviesToShow.forEach(movie => {
-
-        grid.insertAdjacentHTML(
-            "beforeend",
-            createMovieCard(movie)
-        );
-
-    });
-
-    // التحكم في زر تحميل المزيد
-    if (loadMoreBtn) {
-
-        if (currentLimit >= list.length) {
-            loadMoreBtn.style.display = "none";
-        } else {
-            loadMoreBtn.style.display = "inline-flex";
-        }
-
-    }
-
-}
-
-// ==========================================
-// إعادة ضبط العرض
-// ==========================================
-function resetMoviesView() {
-
-    currentLimit = 12;
-
-    renderMovies(currentMovies);
-
-}
-
-// ==========================================
-// تحميل المزيد
-// ==========================================
-function loadMoreMovies() {
-
-    currentLimit += 12;
-
-    renderMovies(currentMovies);
-
-}
-
-// ==========================================
-// ربط زر تحميل المزيد
-// ==========================================
-document.addEventListener("DOMContentLoaded", () => {
-
-    const loadMoreBtn =
-        document.getElementById("load-more-trigger");
-
-    if (loadMoreBtn) {
-
-        loadMoreBtn.addEventListener(
-            "click",
-            loadMoreMovies
-        );
-
-    }
-
-});
-
-/*
-==========================================
-Part 2.3
-البحث + الفلترة + الترتيب
-==========================================
-*/
-
-// القائمة الحالية المعروضة
-let currentMovies = [];
-
-// ===============================
-// البحث
-// ===============================
-function searchMovies(keyword) {
-
-    keyword = keyword.trim().toLowerCase();
-
-    currentLimit = 12;
-
-    if (!keyword) {
-
-        currentMovies = [...moviesDatabase];
-        renderMovies(currentMovies);
-        return;
-
-    }
-
-    currentMovies = moviesDatabase.filter(movie =>
-
-        movie.title.toLowerCase().includes(keyword) ||
-        movie.category.toLowerCase().includes(keyword) ||
-        movie.type.toLowerCase().includes(keyword) ||
-        String(movie.year).includes(keyword)
-
-    );
-
-    renderMovies(currentMovies);
-
-}
-
-// ===============================
-// الفلترة حسب التصنيف
-// ===============================
-function filterMovies(category = "all") {
-
-    currentLimit = 12;
-
-    if (category === "all") {
-
-        currentMovies = [...moviesDatabase];
-
-    } else {
-
-        currentMovies = moviesDatabase.filter(movie =>
-
-            movie.category === category ||
-            movie.type === category
-
-        );
-
-    }
-
-    renderMovies(currentMovies);
-
-}
-
-// ===============================
-// تهيئة البيانات عند فتح الموقع
-// ===============================
-document.addEventListener("DOMContentLoaded", () => {
-
-    currentMovies = [...moviesDatabase];
-
-    renderMovies(currentMovies);
-
-});
-
-/*
-==================================================
-مشروع : SFV-X Movies Empire
-الجزء : 2.4
-الوصف : تشغيل البحث وتحميل البيانات عند فتح الموقع
-==================================================
-*/
-
-// ==========================================
-// تشغيل الموقع بعد تحميل الصفحة
-// ==========================================
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    // الحصول على حقل البحث
-    const searchInput =
-        document.getElementById("main-search-input");
-
-    // تفعيل البحث المباشر أثناء الكتابة
-    if (searchInput) {
-
-        searchInput.addEventListener(
-            "input",
-            (event) => {
-
-                searchMovies(event.target.value);
-
-            }
-        );
-
-    }
-
-    // تحميل جميع الأفلام لأول مرة
-    currentMovies = [...moviesDatabase];
-
-    renderMovies(currentMovies);
-
-});
-
-/*
-==================================================
-مشروع : SFV-X Movies Empire
-الجزء : 3.1
-الوصف : القائمة الجانبية والتنقل العام
-المطور : Muhammad Wael
-==================================================
-*/
-
-/*=========================================
-=            عناصر القائمة الجانبية
-=========================================*/
-
-const sidebar =
-    document.getElementById("main-sidebar");
-
-const menuButton =
-    document.getElementById("menu-toggle");
-
-const sidebarOverlay =
-    document.getElementById("sidebar-overlay");
-
-
-/*=========================================
-=            فتح القائمة
-=========================================*/
-
-function openSidebar() {
-
-    if (!sidebar) return;
-
-    sidebar.classList.add("active");
-
-    document.body.classList.add("sidebar-open");
-
-    if (sidebarOverlay) {
-
-        sidebarOverlay.classList.add("active");
-
-    }
-
-}
-
-
-/*=========================================
-=            إغلاق القائمة
-=========================================*/
-
-function closeSidebar() {
-
-    if (!sidebar) return;
-
-    sidebar.classList.remove("active");
-
-    document.body.classList.remove("sidebar-open");
-
-    if (sidebarOverlay) {
-
-        sidebarOverlay.classList.remove("active");
-
-    }
-
-}
-
-
-/*=========================================
-=            تبديل حالة القائمة
-=========================================*/
-
-function toggleSidebar() {
-
-    if (!sidebar) return;
-
-    sidebar.classList.contains("active")
-        ? closeSidebar()
-        : openSidebar();
-
-}
-
-
-/*=========================================
-=            إغلاق القائمة عند الضغط خارجها
-=========================================*/
-
-document.addEventListener("click", (event) => {
-
-    if (!sidebar) return;
-
-    if (!sidebar.classList.contains("active"))
-        return;
-
-    const clickedInside =
-        sidebar.contains(event.target);
-
-    const clickedMenu =
-        menuButton &&
-        menuButton.contains(event.target);
-
-    if (!clickedInside && !clickedMenu) {
-
-        closeSidebar();
-
-    }
-
-});
-
-
-/*=========================================
-=            ربط زر القائمة
-=========================================*/
-
-if (menuButton) {
-
-    menuButton.addEventListener("click", function (event) {
-
-        event.preventDefault();
-
-        event.stopPropagation();
-
-        toggleSidebar();
-
-    });
-
-}
-
-
-/*=========================================
-=            إغلاق القائمة بزر ESC
-=========================================*/
-
-document.addEventListener("keydown", (event) => {
-
-    if (event.key === "Escape") {
-
-        closeSidebar();
-
-    }
-
-});
-
-
-/*=========================================
-=            إغلاق القائمة بعد الضغط على أي رابط
-=========================================*/
-
-if (sidebar) {
-
-    sidebar.querySelectorAll("a").forEach(link => {
-
-        link.addEventListener("click", () => {
-
-            closeSidebar();
-
-        });
-
-    });
-
-}
-
-
-/*=========================================
-=            تحديد الصفحة الحالية
-=========================================*/
-
-const currentPage = window.location.pathname;
-
-document.querySelectorAll(".sidebar a").forEach(link => {
-
-    if (link.href.includes(currentPage)) {
-
-        link.classList.add("active");
-
-    }
-
-});
-
-/*
-==================================================
-مشروع : SFV-X Movies Empire
-الجزء : 3.2
-الوصف : زر العودة للأعلى + تأثيرات التمرير
-المطور : Muhammad Wael
-==================================================
-*/
-
-/*=========================================
-=            زر العودة للأعلى
-=========================================*/
-
-const scrollTopButton =
-    document.getElementById("scroll-to-top");
-
-const footerScrollButton =
-    document.getElementById("scrollTopFooter");
-
-
-/*=========================================
-=            إظهار وإخفاء الزر
-=========================================*/
-
-function toggleScrollButton() {
-
-    const scrollPosition =
-        window.scrollY;
-
-    if (scrollTopButton) {
-
-        if (scrollPosition >= 500) {
-
-            scrollTopButton.classList.add("show");
-
-        } else {
-
-            scrollTopButton.classList.remove("show");
-
-        }
-
-    }
-
-}
-
-
-/*=========================================
-=            الصعود لأعلى الصفحة
-=========================================*/
-
-function scrollToTop() {
-
-    window.scrollTo({
-
-        top: 0,
-
-        behavior: "smooth"
-
-    });
-
-}
-
-
-/*=========================================
-=            ربط الأزرار
-=========================================*/
-
-if (scrollTopButton) {
-
-    scrollTopButton.addEventListener(
-
-        "click",
-
-        scrollToTop
-
-    );
-
-}
-
-if (footerScrollButton) {
-
-    footerScrollButton.addEventListener(
-
-        "click",
-
-        scrollToTop
-
-    );
-
-}
-
-
-/*=========================================
-=            متابعة التمرير
-=========================================*/
-
-window.addEventListener(
-
-    "scroll",
-
-    toggleScrollButton
-
-);
-
-
-/*=========================================
-=            تشغيل الحالة عند فتح الصفحة
-=========================================*/
-
-toggleScrollButton();
-
-
-/*=========================================
-=            Scroll Reveal بسيط للأقسام
-=========================================*/
-
-const revealElements =
-    document.querySelectorAll("section");
-
-function revealOnScroll() {
-
-    const trigger =
-        window.innerHeight - 120;
-
-    revealElements.forEach(section => {
-
-        const top =
-            section.getBoundingClientRect().top;
-
-        if (top < trigger) {
-
-            section.classList.add("show");
-
-        }
-
-    });
-
-}
-
-window.addEventListener(
-
-    "scroll",
-
-    revealOnScroll
-
-);
-
-revealOnScroll();
-
-/*
-==================================================
-مشروع : SFV-X Movies Empire
-الجزء : 3.3
-الوصف : Loader + Notifications + Live Counters
-المطور : Muhammad Wael
-==================================================
-*/
-
-
-/*=========================================
-=            Page Loader
-=========================================*/
-
-const pageLoader =
-    document.getElementById("pageLoader");
-
-
-window.addEventListener("load", () => {
-
-    if (!pageLoader) return;
-
-    setTimeout(() => {
-
-        pageLoader.style.opacity = "0";
-
-        pageLoader.style.pointerEvents = "none";
-
-        setTimeout(() => {
-
-            pageLoader.remove();
-
-        }, 500);
-
-    }, 400);
-
-});
-
-
-/*=========================================
-=            Notification System
-=========================================*/
-
-const notificationBox =
-    document.getElementById("notificationBox");
-
-
-function showNotification(
-
-    message,
-
-    type = "success",
-
-    duration = 3000
-
-) {
-
-    if (!notificationBox) return;
-
-    notificationBox.innerHTML = `
-
-        <div class="notification ${type}">
-
-            <i class="fas fa-bell"></i>
+            <strong>${title}</strong>
 
             <span>${message}</span>
 
         </div>
 
+        <button
+            class="notification-close"
+            type="button"
+            aria-label="Close"
+        >
+
+            <i class="fas fa-times"></i>
+
+        </button>
+
     `;
 
-    notificationBox.classList.add("show");
+
+    const closeButton =
+        notification.querySelector(
+            ".notification-close"
+        );
+
+
+    if (closeButton) {
+
+        closeButton.addEventListener(
+            "click",
+            () => notification.remove()
+        );
+
+    }
+
+
+    container.appendChild(notification);
+
 
     setTimeout(() => {
 
-        notificationBox.classList.remove("show");
+        if (notification.parentElement) {
 
-    }, duration);
-
-}
-
-
-/*=========================================
-=            العدادات المباشرة
-=========================================*/
-
-const liveCounters = {
-
-    visitors: 1402,
-
-    monthly: 45890,
-
-    watching: 158,
-
-    movies: moviesDatabase.length
-
-};
-
-
-function updateCounters() {
-
-    const visitors =
-        document.getElementById("daily-visitors");
-
-    const monthly =
-        document.getElementById("monthly-hits");
-
-    const watching =
-        document.getElementById("live-users-count");
-
-    const movies =
-        document.getElementById("movies-counter");
-
-
-    if (visitors)
-        visitors.textContent =
-            liveCounters.visitors.toLocaleString();
-
-    if (monthly)
-        monthly.textContent =
-            liveCounters.monthly.toLocaleString();
-
-    if (watching)
-        watching.textContent =
-            liveCounters.watching.toLocaleString();
-
-    if (movies)
-        movies.textContent =
-            liveCounters.movies.toLocaleString();
-
-}
-
-
-/*=========================================
-=            تحديث المشاهدين أونلاين
-=========================================*/
-
-function updateOnlineUsers() {
-
-    liveCounters.watching +=
-        Math.floor(Math.random() * 7) - 3;
-
-    if (liveCounters.watching < 80)
-        liveCounters.watching = 80;
-
-    updateCounters();
-
-}
-
-
-/*=========================================
-=            بدء العدادات
-=========================================*/
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    updateCounters();
-
-    setInterval(
-
-        updateOnlineUsers,
-
-        5000
-
-    );
-
-});
-
-/*
-==================================================
-مشروع : SFV-X Movies Empire
-الجزء : 3.4
-الوصف : الأصوات + التهيئة النهائية
-المطور : Muhammad Wael
-==================================================
-*/
-
-
-/*=========================================
-=            صوت الضغط
-=========================================*/
-
-const clickSound =
-    document.getElementById("clickSound");
-
-
-function playClickSound() {
-
-    if (!clickSound) return;
-
-    clickSound.currentTime = 0;
-
-    clickSound.play().catch(() => {});
-
-}
-
-
-/*=========================================
-=            تشغيل الصوت لكل الأزرار
-=========================================*/
-
-document.addEventListener("click", (event) => {
-
-    const element = event.target.closest(
-
-        "button, a, .movie-card"
-
-    );
-
-    if (!element) return;
-
-    playClickSound();
-
-});
-
-
-/*=========================================
-=            اختصار لوحة المفاتيح
-=========================================*/
-
-document.addEventListener("keydown", (event) => {
-
-    // Ctrl + /
-    if (event.ctrlKey && event.key === "/") {
-
-        event.preventDefault();
-
-        const search =
-            document.getElementById(
-                "main-search-input"
-            );
-
-        if (search) {
-
-            search.focus();
+            notification.remove();
 
         }
 
-    }
-
-});
-
-
-/*=========================================
-=            تهيئة مكتبة AOS
-=========================================*/
-
-if (typeof AOS !== "undefined") {
-
-    AOS.init({
-
-        duration: 700,
-
-        once: true,
-
-        offset: 60
-
-    });
+    }, 5000);
 
 }
 
 
-/*=========================================
-=            تهيئة Swiper
-=========================================*/
 
-if (
-
-    typeof Swiper !== "undefined" &&
-
-    document.querySelector(".swiper")
-
-) {
-
-    new Swiper(".swiper", {
-
-        slidesPerView: 1,
-
-        spaceBetween: 20,
-
-        loop: true,
-
-        autoplay: {
-
-            delay: 5000
-
-        },
-
-        pagination: {
-
-            el: ".swiper-pagination",
-
-            clickable: true
-
-        }
-
-    });
-
-}
-
-
-/*=========================================
-=            رسالة بدء التشغيل
-=========================================*/
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    console.log(
-
-        "%cSFV-X Movies Empire Started",
-
-        "color:#8a2be2;font-size:16px;font-weight:bold"
-
-    );
-
-});
 
 /*
 ==================================================
-مشروع : SFV-X Movies Empire
-الجزء : 4.1
-الوصف : تجهيز البيانات وتوزيع المحتوى
-المطور : Muhammad Wael
+18) فتح نافذة الإشعارات
 ==================================================
 */
 
-/*=========================================
-=            أقسام الصفحة
-=========================================*/
-
-const sections = {
-
-    hero:
-        document.getElementById("hero-slider"),
-
-    trending:
-        document.getElementById("trending-slider"),
-
-    latestMovies:
-        document.getElementById("latest-movies"),
-
-    latestSeries:
-        document.getElementById("latest-series"),
-
-    anime:
-        document.getElementById("anime-grid"),
-
-    donghua:
-        document.getElementById("donghua-grid"),
-
-    cartoon:
-        document.getElementById("cartoon-grid"),
-
-    continueWatching:
-        document.getElementById("continue-watching"),
-
-    recommended:
-        document.getElementById("recommended-grid")
-
-};
-
-
-/*=========================================
-=            استخراج البيانات
-=========================================*/
-
-function getMoviesByType(type) {
-
-    return moviesDatabase.filter(
-
-        movie => movie.type === type
-
-    );
-
-}
-
-
-function getMoviesByCategory(category) {
-
-    return moviesDatabase.filter(
-
-        movie => movie.category === category
-
-    );
-
-}
-
-
-/*=========================================
-=            أحدث الأفلام
-=========================================*/
-
-function getLatestMovies(limit = 12) {
-
-    return [...moviesDatabase]
-
-        .sort((a, b) => b.year - a.year)
-
-        .slice(0, limit);
-
-}
-
-
-/*=========================================
-=            الأعلى تقييماً
-=========================================*/
-
-function getTopRated(limit = 10) {
-
-    return [...moviesDatabase]
-
-        .sort((a, b) => b.rating - a.rating)
-
-        .slice(0, limit);
-
-}
-
-
-/*=========================================
-=            اقتراحات للمستخدم
-=========================================*/
-
-function getRecommended(limit = 12) {
-
-    return [...moviesDatabase]
-
-        .sort(() => Math.random() - 0.5)
-
-        .slice(0, limit);
-
-}
-
-
-/*=========================================
-=            المتابعة لاحقاً
-=========================================*/
-
-function getContinueWatching() {
-
-    return moviesDatabase.slice(0, 6);
-
-}
-
-
-/*=========================================
-=            تنظيف أي عنصر
-=========================================*/
-
-function clearContainer(container) {
-
-    if (!container) return;
-
-    container.innerHTML = "";
-
-}
-
-
-/*=========================================
-=            إضافة مجموعة كروت
-=========================================*/
-
-function appendMovies(container, list) {
-
-    if (!container) return;
-
-    clearContainer(container);
-
-    list.forEach(movie => {
-
-        container.insertAdjacentHTML(
-
-            "beforeend",
-
-            createMovieCard(movie)
-
+function toggleNotifications() {
+
+    const panel =
+        document.getElementById(
+            "notifications-panel"
         );
 
-    });
+
+    if (!panel) return;
+
+
+    panel.classList.toggle("active");
 
 }
+
+
+
 
 /*
 ==================================================
-مشروع : SFV-X Movies Empire
-الجزء : 4.2
-الوصف : Hero + Trending + Latest Movies
-المطور : Muhammad Wael
+19) نظام البحث
 ==================================================
 */
 
+let currentMovies = [...moviesDatabase];
 
-/*=========================================
-=            Hero Section
-=========================================*/
+let currentSearchTerm = "";
 
-function renderHeroMovies() {
+let currentPage = 1;
 
-    const heroContainer =
-        document.getElementById("hero-slider");
-
-    if (!heroContainer) return;
-
-    const heroMovies =
-        getTopRated(5);
-
-    if (!heroMovies.length) return;
-
-    clearContainer(heroContainer);
-
-    heroMovies.forEach(movie => {
-
-        heroContainer.insertAdjacentHTML(
-            "beforeend",
-            `
-            <div class="swiper-slide hero-slide">
-
-                <img
-                    src="${movie.poster}"
-                    alt="${movie.title}"
-                    loading="lazy"
-                >
-
-                <div class="hero-content">
-
-                    <span class="hero-quality">
-                        ${movie.quality}
-                    </span>
-
-                    <h2>
-                        ${movie.title}
-                    </h2>
-
-                    <div class="hero-meta">
-
-                        <span>
-                            ${movie.year}
-                        </span>
-
-                        <span>
-                            ⭐ ${movie.rating}
-                        </span>
-
-                        <span>
-                            +${movie.xp} XP
-                        </span>
-
-                    </div>
-
-                    <button
-                        type="button"
-                        onclick="openMovieDetails(${movie.id})"
-                    >
-                        <i class="fas fa-play"></i>
-                        شاهد الآن
-                    </button>
-
-                </div>
-
-            </div>
-            `
-        );
-
-    });
-
-}
+const moviesPerPage = 12;
 
 
-/*=========================================
-=            Trending
-=========================================*/
 
-function renderTrendingMovies() {
-
-    const trendingContainer =
-        document.getElementById("trending-slider");
-
-    if (!trendingContainer) return;
-
-    const trendingMovies =
-        getTopRated(10);
-
-    if (!trendingMovies.length) return;
-
-    clearContainer(trendingContainer);
-
-    trendingMovies.forEach((movie, index) => {
-
-        trendingContainer.insertAdjacentHTML(
-            "beforeend",
-            `
-            <div
-                class="swiper-slide trending-card"
-                data-id="${movie.id}"
-            >
-
-                <span class="trending-number">
-                    ${index + 1}
-                </span>
-
-                ${createMovieCard(movie)}
-
-            </div>
-            `
-        );
-
-    });
-
-}
-
-
-/*=========================================
-=            أحدث الأفلام
-=========================================*/
-
-function renderLatestMovies() {
-
-    const container =
-        document.getElementById("latest-movies");
-
-    if (!container) return;
-
-    const latestMovies =
-        getLatestMovies(12);
-
-    appendMovies(
-        container,
-        latestMovies
-    );
-
-}
-
-
-/*=========================================
-=            تشغيل القسم
-=========================================*/
-
-function initPart42() {
-
-    renderHeroMovies();
-
-    renderTrendingMovies();
-
-    renderLatestMovies();
-
-}
-
-
-/*=========================================
-=            تشغيل بعد تحميل الصفحة
-=========================================*/
-
-document.addEventListener(
-    "DOMContentLoaded",
-    initPart42
-);
 
 /*
 ==================================================
-مشروع : SFV-X Movies Empire
-الجزء : 4.3
-الوصف : المسلسلات + الأنمي + الدونغهوا + الكرتون
-المطور : Muhammad Wael
+20) البحث داخل قاعدة البيانات
 ==================================================
 */
 
+function searchMovies(term = "") {
 
-/*=========================================
-=            جلب العناصر حسب النوع
-=========================================*/
+    const query =
+        String(term)
+            .trim()
+            .toLowerCase();
 
-function getContentByType(type, limit = 12) {
 
-    return moviesDatabase
-        .filter(movie => movie.type === type)
-        .slice(0, limit);
+    currentSearchTerm = query;
 
-}
 
+    if (!query) {
 
-/*=========================================
-=            أحدث المسلسلات
-=========================================*/
-
-function renderLatestSeries() {
-
-    const container =
-        document.getElementById("latestSeries");
-
-    if (!container) return;
-
-    const series =
-        getContentByType("series", 12);
-
-    appendMovies(
-        container,
-        series
-    );
-
-}
-
-
-/*=========================================
-=            أحدث الأنمي
-=========================================*/
-
-function renderAnime() {
-
-    const container =
-        document.getElementById("animeContainer");
-
-    if (!container) return;
-
-    const anime =
-        getContentByType("anime", 12);
-
-    appendMovies(
-        container,
-        anime
-    );
-
-}
-
-
-/*=========================================
-=            أحدث الدونغهوا
-=========================================*/
-
-function renderDonghua() {
-
-    const container =
-        document.getElementById("donghuaContainer");
-
-    if (!container) return;
-
-    const donghua =
-        getContentByType("donghua", 12);
-
-    appendMovies(
-        container,
-        donghua
-    );
-
-}
-
-
-/*=========================================
-=            الكرتون والأنيميشن
-=========================================*/
-
-function renderCartoon() {
-
-    const container =
-        document.getElementById("cartoonContainer");
-
-    if (!container) return;
-
-    const cartoon =
-        getContentByType("cartoon", 12);
-
-    appendMovies(
-        container,
-        cartoon
-    );
-
-}
-
-
-/*=========================================
-=            تشغيل جميع الأقسام
-=========================================*/
-
-function initContentSections() {
-
-    renderLatestSeries();
-
-    renderAnime();
-
-    renderDonghua();
-
-    renderCartoon();
-
-}
-
-
-/*=========================================
-=            تشغيل بعد تحميل الصفحة
-=========================================*/
-
-document.addEventListener(
-    "DOMContentLoaded",
-    initContentSections
-);
-
- /*
-==================================================
-مشروع : SFV-X Movies Empire
-الجزء : 4.4
-الوصف : ملخصات الأفلام + أكمل المشاهدة
-المطور : Muhammad Wael
-==================================================
-*/
-
-
-// ==========================================
-// ملخصات الأفلام
-// ==========================================
-
-function renderMovieSummaries() {
-
-    const container =
-        document.getElementById("summaryContainer");
-
-    if (!container) return;
-
-    // اختيار مجموعة من الأفلام للملخصات
-    const summaries =
-        getTopRated(8);
-
-    appendMovies(
-        container,
-        summaries
-    );
-}
-
-
-// ==========================================
-// قراءة قائمة أكمل المشاهدة
-// ==========================================
-
-function getContinueMovies() {
-
-    const saved =
-        localStorage.getItem("sfvx_continue_watching");
-
-    if (!saved) return [];
-
-    try {
-
-        const ids = JSON.parse(saved);
-
-        return ids
-            .map(id =>
-                moviesDatabase.find(
-                    movie => movie.id === Number(id)
-                )
-            )
-            .filter(Boolean);
-
-    } catch (error) {
-
-        console.warn(
-            "تعذر قراءة قائمة المشاهدة:",
-            error
-        );
-
-        return [];
+        currentMovies =
+            [...moviesDatabase];
 
     }
-}
+
+    else {
+
+        currentMovies =
+            moviesDatabase.filter(movie => {
+
+                const title =
+                    String(movie.title || "")
+                        .toLowerCase();
 
 
-// ==========================================
-// حفظ فيلم في أكمل المشاهدة
-// ==========================================
-
-function addToContinueWatching(movieId) {
-
-    const movie =
-        moviesDatabase.find(
-            item => item.id === Number(movieId)
-        );
-
-    if (!movie) return;
-
-    let continueMovies =
-        getContinueMovies()
-            .map(item => item.id);
-
-    // إزالة الفيلم إذا كان موجودًا
-    continueMovies =
-        continueMovies.filter(
-            id => id !== movie.id
-        );
-
-    // وضع الفيلم في البداية
-    continueMovies.unshift(movie.id);
-
-    // الاحتفاظ بآخر 12 فيلمًا فقط
-    continueMovies =
-        continueMovies.slice(0, 12);
-
-    localStorage.setItem(
-        "sfvx_continue_watching",
-        JSON.stringify(continueMovies)
-    );
-
-    renderContinueWatching();
-}
+                const category =
+                    String(movie.category || "")
+                        .toLowerCase();
 
 
-// ==========================================
-// عرض أكمل المشاهدة
-// ==========================================
+                const type =
+                    String(movie.type || "")
+                        .toLowerCase();
 
-function renderContinueWatching() {
 
-    const container =
-        document.getElementById("continueWatching");
+                const description =
+                    String(movie.description || "")
+                        .toLowerCase();
 
-    if (!container) return;
 
-    const continueMovies =
-        getContinueMovies();
+                const quality =
+                    String(movie.quality || "")
+                        .toLowerCase();
 
-    // لا توجد أفلام تمت مشاهدتها
-    if (!continueMovies.length) {
 
-        container.innerHTML = `
-            <div class="no-results">
-                <i class="fas fa-clock-rotate-left"></i>
+                const year =
+                    String(movie.year || "")
+                        .toLowerCase();
 
-                <h3>
-                    لا توجد أفلام قيد المشاهدة
-                </h3>
 
-                <p>
-                    ابدأ مشاهدة فيلم وسيظهر هنا.
-                </p>
-            </div>
-        `;
+                return (
 
-        return;
+                    title.includes(query) ||
+
+                    category.includes(query) ||
+
+                    type.includes(query) ||
+
+                    description.includes(query) ||
+
+                    quality.includes(query) ||
+
+                    year.includes(query)
+
+                );
+
+            });
+
     }
 
-    appendMovies(
-        container,
-        continueMovies
-    );
-}
+
+    currentPage = 1;
 
 
-// ==========================================
-// تهيئة أقسام Part 4.4
-// ==========================================
-
-function initPart44() {
-
-    renderMovieSummaries();
-
-    renderContinueWatching();
-
-}
+    renderDynamicMovies();
 
 
-// ==========================================
-// تشغيل بعد تحميل الصفحة
-// ==========================================
-
-document.addEventListener(
-    "DOMContentLoaded",
-    initPart44
-);
-
-/*
-==================================================
-مشروع : SFV-X Movies Empire
-الجزء : 4.5
-الوصف : التهيئة النهائية وربط أقسام المحتوى
-المطور : Muhammad Wael
-==================================================
-*/
-
-
-// ==========================================
-// تهيئة Slider الخاص بـ Trending
-// ==========================================
-
-function initTrendingSlider() {
-
-    const slider =
-        document.querySelector("#trending-slider");
-
-    if (!slider) return;
-
-    // التأكد من وجود مكتبة Swiper
-    if (typeof Swiper === "undefined") return;
-
-    // منع إنشاء Slider أكثر من مرة
-    if (slider.dataset.swiperReady === "true") {
-        return;
-    }
-
-    const wrapper =
-        slider.closest(".swiper");
-
-    if (!wrapper) return;
-
-    new Swiper(wrapper, {
-
-        slidesPerView: 2,
-
-        spaceBetween: 15,
-
-        navigation: {
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev"
-        },
-
-        breakpoints: {
-
-            480: {
-                slidesPerView: 2
-            },
-
-            768: {
-                slidesPerView: 3
-            },
-
-            1024: {
-                slidesPerView: 5
-            },
-
-            1400: {
-                slidesPerView: 6
-            }
-
-        }
-
-    });
-
-    slider.dataset.swiperReady = "true";
-
-}
-
-
-// ==========================================
-// تهيئة Hero Slider
-// ==========================================
-
-function initHeroSlider() {
-
-    const slider =
-        document.querySelector("#hero-slider");
-
-    if (!slider) return;
-
-    if (typeof Swiper === "undefined") return;
-
-    const wrapper =
-        slider.closest(".swiper");
-
-    if (!wrapper) return;
-
-    if (slider.dataset.swiperReady === "true") {
-        return;
-    }
-
-    new Swiper(wrapper, {
-
-        slidesPerView: 1,
-
-        spaceBetween: 0,
-
-        loop: true,
-
-        autoplay: {
-            delay: 5000,
-            disableOnInteraction: false
-        },
-
-        pagination: {
-            el: ".swiper-pagination",
-            clickable: true
-        },
-
-        navigation: {
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev"
-        }
-
-    });
-
-    slider.dataset.swiperReady = "true";
-
-}
-
-
-// ==========================================
-// تحديث عدد المحتوى
-// ==========================================
-
-function updateContentCounter() {
-
-    const counter =
-        document.getElementById("movies-counter");
-
-    if (!counter) return;
-
-    counter.textContent =
-        moviesDatabase.length.toLocaleString();
-
-}
-
-
-// ==========================================
-// تشغيل Part 4 بالكامل
-// ==========================================
-
-function initPart4() {
-
-    // تحديث عدد المحتوى
     updateContentCounter();
 
-    // إعادة عرض الأقسام الرئيسية
-    renderHeroMovies();
-
-    renderTrendingMovies();
-
-    renderLatestMovies();
-
-    renderLatestSeries();
-
-    renderAnime();
-
-    renderDonghua();
-
-    renderCartoon();
-
-    renderMovieSummaries();
-
-    renderContinueWatching();
-
-    // تشغيل الـ Sliders بعد إنشاء المحتوى
-    initHeroSlider();
-
-    initTrendingSlider();
-
 }
 
 
-// ==========================================
-// تشغيل بعد تحميل الصفحة
-// ==========================================
 
-document.addEventListener(
-    "DOMContentLoaded",
-    initPart4
-);
 
 /*
 ==================================================
-مشروع : SFV-X Movies Empire
-الجزء : 5.1
-الوصف : نظام تفاصيل الفيلم وفتح الـ Movie Overlay
-المطور : Muhammad Wael
+21) الحصول على فيلم بالـ ID
 ==================================================
 */
-
-
-// ==========================================
-// بيانات الفيلم المحدد حاليًا
-// ==========================================
-
-let selectedMovie = null;
-
-
-// ==========================================
-// عناصر الـ Overlay
-// ==========================================
-
-function getMovieOverlay() {
-
-    return document.querySelector(".movie-overlay");
-
-}
-
-
-// ==========================================
-// البحث عن فيلم بواسطة ID
-// ==========================================
 
 function findMovie(movieId) {
 
     return moviesDatabase.find(
-        movie => movie.id === Number(movieId)
+
+        movie =>
+
+            String(movie.id) ===
+            String(movieId)
+
     );
 
 }
 
 
-// ==========================================
-// فتح تفاصيل الفيلم
-// ==========================================
-
-function openMovieDetails(movieId) {
-
-    const movie =
-        findMovie(movieId);
-
-    if (!movie) {
-
-        showNotification(
-            "الفيلم غير موجود",
-            "error"
-        );
-
-        return;
-
-    }
-
-    selectedMovie = movie;
-
-    const overlay =
-        getMovieOverlay();
-
-    if (!overlay) {
-
-        console.warn(
-            "Movie overlay غير موجود في HTML"
-        );
-
-        return;
-
-    }
-
-    // تعبئة بيانات الفيلم
-    updateMovieOverlay(movie);
-
-    // إظهار الـ Overlay
-    overlay.style.display = "flex";
-
-    // منع تمرير الصفحة خلف النافذة
-    document.body.classList.add(
-        "overlay-open"
-    );
-
-}
-
-
-// ==========================================
-// تحديث بيانات الـ Overlay
-// ==========================================
-
-function updateMovieOverlay(movie) {
-
-    const title =
-        document.querySelector(".overlay-title");
-
-    const description =
-        document.querySelector(".overlay-description");
-
-    const poster =
-        document.querySelector(".overlay-poster img");
-
-
-    if (title) {
-
-        title.textContent =
-            movie.title;
-
-    }
-
-
-    if (description) {
-
-        description.textContent =
-            movie.description ||
-            "استمتع بمشاهدة هذا العمل بجودة عالية على SFV-X.";
-
-    }
-
-
-    if (poster) {
-
-        poster.src =
-            movie.poster;
-
-        poster.alt =
-            movie.title;
-
-    }
-
-
-    // تحديث بيانات إضافية إن كانت موجودة
-    const quality =
-        document.querySelector(".overlay-quality");
-
-    const rating =
-        document.querySelector(".overlay-rating");
-
-    const year =
-        document.querySelector(".overlay-year");
-
-
-    if (quality) {
-
-        quality.textContent =
-            movie.quality;
-
-    }
-
-
-    if (rating) {
-
-        rating.textContent =
-            `⭐ ${movie.rating}`;
-
-    }
-
-
-    if (year) {
-
-        year.textContent =
-            movie.year;
-
-    }
-
-}
-
-
-// ==========================================
-// إغلاق الـ Overlay
-// ==========================================
-
-function closeMovieOverlay() {
-
-    const overlay =
-        getMovieOverlay();
-
-    if (!overlay) return;
-
-    overlay.style.display =
-        "none";
-
-    document.body.classList.remove(
-        "overlay-open"
-    );
-
-    selectedMovie = null;
-
-}
-
-
-// ==========================================
-// ربط زر الإغلاق
-// ==========================================
-
-document.addEventListener(
-    "DOMContentLoaded",
-    () => {
-
-        const closeButton =
-            document.querySelector(".close-overlay");
-
-        if (closeButton) {
-
-            closeButton.addEventListener(
-                "click",
-                closeMovieOverlay
-            );
-
-        }
-
-    }
-);
-
-
-// ==========================================
-// إغلاق عند الضغط على خلفية الـ Overlay
-// ==========================================
-
-document.addEventListener(
-    "click",
-    event => {
-
-        const overlay =
-            getMovieOverlay();
-
-        if (!overlay) return;
-
-        if (event.target === overlay) {
-
-            closeMovieOverlay();
-
-        }
-
-    }
-);
-
-
-// ==========================================
-// إغلاق باستخدام زر ESC
-// ==========================================
-
-document.addEventListener(
-    "keydown",
-    event => {
-
-        if (
-            event.key === "Escape" &&
-            selectedMovie
-        ) {
-
-            closeMovieOverlay();
-
-        }
-
-    }
-);
-
-/*
-==================================================
-مشروع : SFV-X Movies Empire
-الجزء : 5.2
-الوصف : تشغيل الفيلم + XP + أكمل المشاهدة
-المطور : Muhammad Wael
-==================================================
-*/
-
-
-// ==========================================
-// حالة المشاهدة الحالية
-// ==========================================
-
-let currentPlayingMovie = null;
-
-let movieRewardGiven = false;
-
-
-// ==========================================
-// تشغيل الفيلم
-// ==========================================
-
-function playMovie(movieId = null) {
-
-    const id =
-        movieId !== null
-            ? movieId
-            : selectedMovie?.id;
-
-    if (!id) {
-
-        showNotification(
-            "اختر فيلمًا أولًا",
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    const movie =
-        findMovie(id);
-
-    if (!movie) {
-
-        showNotification(
-            "تعذر العثور على الفيلم",
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    currentPlayingMovie = movie;
-
-    movieRewardGiven = false;
-
-
-    // حفظ الفيلم في أكمل المشاهدة
-    if (
-        typeof addToContinueWatching ===
-        "function"
-    ) {
-
-        addToContinueWatching(movie.id);
-
-    }
-
-
-    // مكافأة بداية المشاهدة
-    rewardMovieWatch(movie);
-
-
-    // إغلاق نافذة التفاصيل
-    closeMovieOverlay();
-
-
-    // فتح مشغل السينما
-    openCinemaPlayer(movie);
-
-}
-
-
-// ==========================================
-// مكافأة المشاهدة
-// ==========================================
-
-function rewardMovieWatch(movie) {
-
-    if (!movie) return;
-
-    if (movieRewardGiven) return;
-
-    movieRewardGiven = true;
-
-
-    if (
-        typeof rewardWatching ===
-        "function"
-    ) {
-
-        rewardWatching(movie);
-
-        return;
-
-    }
-
-
-    // حماية في حالة عدم وجود نظام XP
-    if (
-        typeof updateXP ===
-        "function"
-    ) {
-
-        updateXP(
-            movie.xp || 0,
-            `شاهدت ${movie.title}`
-        );
-
-    }
-
-}
-
-
-// ==========================================
-// فتح وضع السينما
-// ==========================================
-
-function openCinemaPlayer(movie) {
-
-    const cinemaOverlay =
-        document.querySelector(
-            ".cinema-overlay"
-        );
-
-    if (!cinemaOverlay) {
-
-        showNotification(
-            `بدأ تشغيل: ${movie.title}`,
-            "success"
-        );
-
-        return;
-
-    }
-
-
-    cinemaOverlay.style.display =
-        "flex";
-
-    document.body.classList.add(
-        "cinema-mode-active"
-    );
-
-
-    // تحديث عنوان المشغل إن وجد
-    const playerTitle =
-        cinemaOverlay.querySelector(
-            ".cinema-title"
-        );
-
-    if (playerTitle) {
-
-        playerTitle.textContent =
-            movie.title;
-
-    }
-
-
-    // تحديث صورة الفيلم إن وجدت
-    const playerImage =
-        cinemaOverlay.querySelector(
-            "img"
-        );
-
-    if (playerImage) {
-
-        playerImage.src =
-            movie.poster;
-
-        playerImage.alt =
-            movie.title;
-
-    }
-
-
-    showNotification(
-        `جاري تشغيل: ${movie.title}`,
-        "success"
-    );
-
-}
-
-
-// ==========================================
-// إغلاق وضع السينما
-// ==========================================
-
-function closeCinemaPlayer() {
-
-    const cinemaOverlay =
-        document.querySelector(
-            ".cinema-overlay"
-        );
-
-    if (cinemaOverlay) {
-
-        cinemaOverlay.style.display =
-            "none";
-
-    }
-
-
-    document.body.classList.remove(
-        "cinema-mode-active"
-    );
-
-
-    currentPlayingMovie = null;
-
-}
-
-
-// ==========================================
-// إغلاق السينما بزر ESC
-// ==========================================
-
-document.addEventListener(
-    "keydown",
-    event => {
-
-        if (
-            event.key === "Escape" &&
-            currentPlayingMovie
-        ) {
-
-            closeCinemaPlayer();
-
-        }
-
-    }
-);
-
-
-// ==========================================
-// ربط زر التشغيل
-// ==========================================
-
-document.addEventListener(
-    "DOMContentLoaded",
-    () => {
-
-        const playButton =
-            document.querySelector(
-                ".play-now-btn"
-            );
-
-        if (playButton) {
-
-            playButton.addEventListener(
-                "click",
-                event => {
-
-                    event.preventDefault();
-
-                    playMovie();
-
-                }
-            );
-
-        }
-
-    }
-);
 
 
 /*
 ==================================================
-مشروع : SFV-X Movies Empire
-الجزء : 5.3
-الوصف : نظام المفضلة وحفظها في LocalStorage
-المطور : Muhammad Wael
+22) الحصول على الأفلام حسب النوع
 ==================================================
 */
 
+function getMoviesByType(type) {
 
-// ==========================================
-// مفتاح تخزين المفضلة
-// ==========================================
-
-const FAVORITES_KEY =
-    "sfvx_favorites";
-
-
-// ==========================================
-// قراءة المفضلة
-// ==========================================
-
-function getFavorites() {
-
-    const saved =
-        localStorage.getItem(
-            FAVORITES_KEY
-        );
-
-    if (!saved) return [];
-
-    try {
-
-        const favorites =
-            JSON.parse(saved);
-
-        return Array.isArray(favorites)
-            ? favorites.map(Number)
-            : [];
-
-    } catch (error) {
-
-        console.warn(
-            "تعذر قراءة المفضلة",
-            error
-        );
+    if (!type) {
 
         return [];
 
     }
 
-}
 
+    return moviesDatabase.filter(
 
-// ==========================================
-// حفظ المفضلة
-// ==========================================
+        movie =>
 
-function saveFavorites(ids) {
+            String(movie.type)
+                .toLowerCase()
 
-    localStorage.setItem(
+            ===
 
-        FAVORITES_KEY,
-
-        JSON.stringify(ids)
+            String(type)
+                .toLowerCase()
 
     );
 
 }
 
 
-// ==========================================
-// التحقق من وجود فيلم في المفضلة
-// ==========================================
 
-function isFavorite(movieId) {
 
-    return getFavorites().includes(
-        Number(movieId)
+/*
+==================================================
+23) الحصول على الأفلام حسب التصنيف
+==================================================
+*/
+
+function getMoviesByCategory(category) {
+
+    if (!category) {
+
+        return [];
+
+    }
+
+
+    return moviesDatabase.filter(
+
+        movie =>
+
+            String(movie.category)
+                .toLowerCase()
+
+            ===
+
+            String(category)
+                .toLowerCase()
+
     );
 
 }
 
 
-// ==========================================
-// إضافة / إزالة فيلم من المفضلة
-// ==========================================
 
-function toggleFavorite(movieId) {
 
-    const id =
-        Number(movieId);
+/*
+==================================================
+24) أحدث الأفلام
+==================================================
+*/
 
-    const movie =
-        findMovie(id);
+function getLatestMovies(limit = 6) {
 
-    if (!movie) {
+    return [...moviesDatabase]
 
-        showNotification(
-            "الفيلم غير موجود",
-            "error"
-        );
+        .sort(
+
+            (a, b) =>
+
+                Number(b.year || 0) -
+                Number(a.year || 0)
+
+        )
+
+        .slice(0, limit);
+
+}
+
+
+
+
+/*
+==================================================
+25) الأعلى تقييماً
+==================================================
+*/
+
+function getTopRated(limit = 6) {
+
+    return [...moviesDatabase]
+
+        .sort(
+
+            (a, b) =>
+
+                Number(b.rating || 0) -
+                Number(a.rating || 0)
+
+        )
+
+        .slice(0, limit);
+
+}
+
+
+
+
+/*
+==================================================
+26) ترتيب الأفلام
+==================================================
+*/
+
+function sortMovies(sortType) {
+
+    const movies =
+        [...currentMovies];
+
+
+    switch (sortType) {
+
+
+        case "rating-desc":
+
+            movies.sort(
+
+                (a, b) =>
+
+                    Number(b.rating || 0) -
+                    Number(a.rating || 0)
+
+            );
+
+            break;
+
+
+
+        case "rating-asc":
+
+            movies.sort(
+
+                (a, b) =>
+
+                    Number(a.rating || 0) -
+                    Number(b.rating || 0)
+
+            );
+
+            break;
+
+
+
+        case "year-desc":
+
+        case "newest":
+
+            movies.sort(
+
+                (a, b) =>
+
+                    Number(b.year || 0) -
+                    Number(a.year || 0)
+
+            );
+
+            break;
+
+
+
+        case "year-asc":
+
+            movies.sort(
+
+                (a, b) =>
+
+                    Number(a.year || 0) -
+                    Number(b.year || 0)
+
+            );
+
+            break;
+
+
+
+        case "title-asc":
+
+        case "az":
+
+            movies.sort(
+
+                (a, b) =>
+
+                    String(a.title || "")
+                        .localeCompare(
+                            String(b.title || ""),
+                            "ar"
+                        )
+
+            );
+
+            break;
+
+
+
+        case "rating":
+
+            movies.sort(
+
+                (a, b) =>
+
+                    Number(b.rating || 0) -
+                    Number(a.rating || 0)
+
+            );
+
+            break;
+
+
+
+        default:
+
+            break;
+
+    }
+
+
+    currentMovies =
+        movies;
+
+
+    currentPage = 1;
+
+
+    renderDynamicMovies();
+
+
+    updateContentCounter();
+
+}
+
+
+
+
+/*
+==================================================
+27) إنشاء بطاقة الفيلم
+==================================================
+*/
+
+function createMovieCard(movie) {
+
+    if (!movie) return null;
+
+
+    const card =
+        document.createElement("article");
+
+
+    card.className =
+        "movie-card";
+
+
+    card.dataset.movieId =
+        movie.id;
+
+
+    const rating =
+        Number(movie.rating || 0)
+            .toFixed(1);
+
+
+    const poster =
+        movie.poster ||
+        "images/logo.png";
+
+
+    card.innerHTML = `
+
+        <div class="movie-card-poster">
+
+            <img
+                src="${poster}"
+                alt="${movie.title || "Movie"}"
+                loading="lazy"
+                onerror="this.onerror=null;this.src='images/logo.png';"
+            >
+
+
+            <div class="movie-card-overlay">
+
+                <button
+                    class="movie-play-btn"
+                    type="button"
+                    data-action="play"
+                    data-id="${movie.id}"
+                    title="تشغيل"
+                >
+
+                    <i class="fas fa-play"></i>
+
+                </button>
+
+            </div>
+
+
+            <span class="movie-quality">
+
+                ${movie.quality || "HD"}
+
+            </span>
+
+
+            <span class="movie-rating">
+
+                <i class="fas fa-star"></i>
+
+                ${rating}
+
+            </span>
+
+
+        </div>
+
+
+        <div class="movie-card-info">
+
+            <h3 class="movie-title">
+
+                ${movie.title || "بدون عنوان"}
+
+            </h3>
+
+
+            <div class="movie-meta">
+
+                <span>
+
+                    ${movie.year || "----"}
+
+                </span>
+
+
+                <span>
+
+                    ${movie.type || "movie"}
+
+                </span>
+
+            </div>
+
+
+            <div class="movie-card-actions">
+
+                <button
+                    type="button"
+                    class="favorite-btn"
+                    data-action="favorite"
+                    data-id="${movie.id}"
+                    title="المفضلة"
+                >
+
+                    <i class="far fa-heart"></i>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="details-btn"
+                    data-action="details"
+                    data-id="${movie.id}"
+                >
+
+                    التفاصيل
+
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    return card;
+
+}
+
+
+
+
+/*
+==================================================
+28) إضافة بطاقة إلى Container
+==================================================
+*/
+
+function appendMovieCard(container, movie) {
+
+    if (!container || !movie) {
 
         return;
 
     }
 
 
-    let favorites =
-        getFavorites();
+    const card =
+        createMovieCard(movie);
 
 
-    if (favorites.includes(id)) {
+    if (card) {
 
-        // إزالة الفيلم
-        favorites =
-            favorites.filter(
-                favoriteId =>
-                    favoriteId !== id
-            );
-
-        saveFavorites(favorites);
-
-        showNotification(
-            "تمت إزالة الفيلم من المفضلة",
-            "success"
-        );
-
-    } else {
-
-        // إضافة الفيلم
-        favorites.unshift(id);
-
-        saveFavorites(favorites);
-
-        showNotification(
-            "تمت إضافة الفيلم إلى المفضلة",
-            "success"
-        );
-
-        // مكافأة بسيطة للمهمة
-        if (
-            typeof updateXP ===
-            "function"
-        ) {
-
-            updateXP(
-                10,
-                "إضافة فيلم إلى المفضلة"
-            );
-
-        }
+        container.appendChild(card);
 
     }
+
+}
+
+
+
+
+/*
+==================================================
+29) رسم مجموعة أفلام
+==================================================
+*/
+
+function appendMovies(container, movies) {
+
+    if (!container || !Array.isArray(movies)) {
+
+        return;
+
+    }
+
+
+    movies.forEach(movie => {
+
+        appendMovieCard(
+            container,
+            movie
+        );
+
+    });
 
 
     updateFavoriteButtons();
@@ -3060,70 +1225,502 @@ function toggleFavorite(movieId) {
 }
 
 
-// ==========================================
-// تحديث شكل أزرار القلب
-// ==========================================
 
-function updateFavoriteButtons() {
 
-    const buttons =
-        document.querySelectorAll(
-            ".favorite-btn"
+/*
+==================================================
+30) تنظيف Container
+==================================================
+*/
+
+function clearContainer(container) {
+
+    if (!container) return;
+
+
+    container.innerHTML = "";
+
+}
+
+
+
+
+/*
+==================================================
+31) رسم النتائج الرئيسية
+==================================================
+*/
+
+function renderDynamicMovies() {
+
+    const container =
+
+        document.getElementById(
+            "dynamic-movie-grid"
         );
+
+
+    if (!container) return;
+
+
+    clearContainer(container);
+
+
+    const start =
+        0;
+
+
+    const end =
+        currentPage *
+        moviesPerPage;
+
+
+    const moviesToRender =
+        currentMovies.slice(
+            start,
+            end
+        );
+
+
+    if (!moviesToRender.length) {
+
+        container.innerHTML = `
+
+            <div class="empty-state">
+
+                <i class="fas fa-film"></i>
+
+                <h3>لا توجد نتائج</h3>
+
+                <p>
+                    جرّب البحث بكلمة أخرى.
+                </p>
+
+            </div>
+
+        `;
+
+
+        return;
+
+    }
+
+
+    appendMovies(
+        container,
+        moviesToRender
+    );
+
+}
+
+
+
+
+/*
+==================================================
+32) تحميل المزيد
+==================================================
+*/
+
+function loadMoreMovies() {
+
+    const total =
+        currentMovies.length;
+
+
+    if (
+        currentPage *
+        moviesPerPage
+        >= total
+    ) {
+
+        showNotification(
+
+            "انتهت النتائج",
+
+            "لا توجد أفلام إضافية لعرضها.",
+
+            "fa-check"
+
+        );
+
+
+        return;
+
+    }
+
+
+    currentPage++;
+
+
+    renderDynamicMovies();
+
+}
+
+
+
+
+/*
+==================================================
+33) عداد المحتوى
+==================================================
+*/
+
+function updateContentCounter() {
+
+    const counter =
+
+        document.getElementById(
+            "content-counter"
+        );
+
+
+    if (!counter) return;
+
+
+    counter.textContent =
+
+        currentMovies.length.toLocaleString();
+
+}
+
+
+
+
+/*
+==================================================
+34) التعامل مع الضغط على بطاقات الأفلام
+==================================================
+*/
+
+function setupMovieCardEvents() {
+
+    document.addEventListener(
+        "click",
+        event => {
+
+            const button =
+                event.target.closest(
+                    "[data-action]"
+                );
+
+
+            if (!button) return;
+
+
+            const action =
+                button.dataset.action;
+
+
+            const movieId =
+                button.dataset.id;
+
+
+            const movie =
+                findMovie(movieId);
+
+
+            if (!movie) return;
+
+
+            if (action === "play") {
+
+                playMovie(movieId);
+
+            }
+
+
+            else if (action === "details") {
+
+                openMovieDetails(movieId);
+
+            }
+
+
+            else if (action === "favorite") {
+
+                toggleFavorite(movieId);
+
+            }
+
+        }
+
+    );
+
+}
+
+/*
+==================================================
+35) نظام المفضلة
+==================================================
+*/
+
+function getFavorites() {
+
+    try {
+
+        const saved =
+            localStorage.getItem(
+                "sfvx_favorites"
+            );
+
+
+        if (!saved) {
+
+            return [];
+
+        }
+
+
+        const parsed =
+            JSON.parse(saved);
+
+
+        return Array.isArray(parsed)
+            ? parsed
+            : [];
+
+    }
+
+    catch (error) {
+
+        console.warn(
+            "تعذر قراءة المفضلة:",
+            error
+        );
+
+
+        return [];
+
+    }
+
+}
+
+
+
+
+/*
+==================================================
+36) حفظ المفضلة
+==================================================
+*/
+
+function saveFavorites(favorites) {
+
+    if (!Array.isArray(favorites)) {
+
+        favorites = [];
+
+    }
+
+
+    sfvxUser.favorites =
+        favorites;
+
+
+    localStorage.setItem(
+
+        "sfvx_favorites",
+
+        JSON.stringify(favorites)
+
+    );
+
+}
+
+
+
+
+/*
+==================================================
+37) التحقق هل الفيلم في المفضلة
+==================================================
+*/
+
+function isFavorite(movieId) {
 
     const favorites =
         getFavorites();
 
 
+    return favorites.some(
+
+        id =>
+
+            String(id) ===
+            String(movieId)
+
+    );
+
+}
+
+
+
+
+/*
+==================================================
+38) إضافة / إزالة فيلم من المفضلة
+==================================================
+*/
+
+function toggleFavorite(movieId) {
+
+    const favorites =
+        getFavorites();
+
+
+    const index =
+        favorites.findIndex(
+
+            id =>
+
+                String(id) ===
+                String(movieId)
+
+        );
+
+
+    if (index !== -1) {
+
+        // إزالة
+
+        favorites.splice(
+            index,
+            1
+        );
+
+
+        saveFavorites(
+            favorites
+        );
+
+
+        showNotification(
+
+            "تمت الإزالة",
+
+            "تمت إزالة الفيلم من المفضلة.",
+
+            "fa-heart-broken"
+
+        );
+
+    }
+
+    else {
+
+        // إضافة
+
+        favorites.push(
+            movieId
+        );
+
+
+        saveFavorites(
+            favorites
+        );
+
+
+        const movie =
+            findMovie(movieId);
+
+
+        showNotification(
+
+            "تمت الإضافة ❤️",
+
+            movie
+
+                ? `تمت إضافة ${movie.title} إلى المفضلة.`
+
+                : "تمت إضافة الفيلم إلى المفضلة.",
+
+            "fa-heart"
+
+        );
+
+    }
+
+
+    updateFavoriteButtons();
+
+
+    renderFavorites();
+
+}
+
+
+
+
+/*
+==================================================
+39) تحديث أزرار المفضلة
+==================================================
+*/
+
+function updateFavoriteButtons() {
+
+    const buttons =
+        document.querySelectorAll(
+            "[data-action='favorite']"
+        );
+
+
     buttons.forEach(button => {
 
-        const onclick =
-            button.getAttribute(
-                "onclick"
-            );
-
-        if (!onclick) return;
-
-
-        const match =
-            onclick.match(
-                /toggleFavorite\((\d+)\)/
-            );
-
-        if (!match) return;
-
-
         const movieId =
-            Number(match[1]);
+            button.dataset.id;
 
 
-        const active =
-            favorites.includes(
-                movieId
-            );
-
-
-        button.classList.toggle(
-            "active",
-            active
-        );
+        const favorite =
+            isFavorite(movieId);
 
 
         const icon =
             button.querySelector("i");
 
 
-        if (icon) {
+        if (favorite) {
 
-            icon.classList.toggle(
-                "fas",
-                active
+            button.classList.add(
+                "active"
             );
 
-            icon.classList.toggle(
-                "far",
-                !active
+
+            if (icon) {
+
+                icon.classList.remove(
+                    "far"
+                );
+
+
+                icon.classList.add(
+                    "fas"
+                );
+
+            }
+
+        }
+
+        else {
+
+            button.classList.remove(
+                "active"
             );
+
+
+            if (icon) {
+
+                icon.classList.remove(
+                    "fas"
+                );
+
+
+                icon.classList.add(
+                    "far"
+                );
+
+            }
 
         }
 
@@ -3132,9 +1729,13 @@ function updateFavoriteButtons() {
 }
 
 
-// ==========================================
-// عرض المفضلة
-// ==========================================
+
+
+/*
+==================================================
+40) عرض المفضلة
+==================================================
+*/
 
 function renderFavorites() {
 
@@ -3143,15 +1744,21 @@ function renderFavorites() {
             "favorites-grid"
         );
 
+
     if (!container) return;
 
 
-    const favoriteIds =
+    clearContainer(
+        container
+    );
+
+
+    const favorites =
         getFavorites();
 
 
-    const favoriteMovies =
-        favoriteIds
+    const movies =
+        favorites
 
             .map(id =>
                 findMovie(id)
@@ -3160,26 +1767,27 @@ function renderFavorites() {
             .filter(Boolean);
 
 
-    if (!favoriteMovies.length) {
+    if (!movies.length) {
 
         container.innerHTML = `
 
-            <div class="no-results">
+            <div class="empty-state">
 
-                <i class="fas fa-heart"></i>
+                <i class="far fa-heart"></i>
 
                 <h3>
-                    لا توجد أفلام في المفضلة
+                    قائمة المفضلة فارغة
                 </h3>
 
                 <p>
-                    أضف الأفلام التي تحبها
-                    وستظهر هنا.
+                    أضف الأفلام التي تريد الرجوع
+                    إليها لاحقاً.
                 </p>
 
             </div>
 
         `;
+
 
         return;
 
@@ -3188,69 +1796,705 @@ function renderFavorites() {
 
     appendMovies(
         container,
-        favoriteMovies
+        movies
     );
 
 }
 
 
-// ==========================================
-// تهيئة نظام المفضلة
-// ==========================================
-
-document.addEventListener(
-    "DOMContentLoaded",
-    () => {
-
-        updateFavoriteButtons();
-
-        renderFavorites();
-
-    }
-);
 
 
 /*
 ==================================================
-مشروع : SFV-X Movies Empire
-الجزء : 5.4
-الوصف : Trailer + أزرار الـOverlay والتحكم
-المطور : Muhammad Wael
+41) نظام سجل المشاهدة
 ==================================================
 */
 
+// نخزن آخر الأفلام التي شاهدها المستخدم.
 
-// ==========================================
-// فتح التريلر
-// ==========================================
+function getWatchHistory() {
 
-function openTrailer(movieId = null) {
+    try {
 
-    const id =
-        movieId !== null
-            ? Number(movieId)
-            : selectedMovie?.id;
+        const saved =
+            localStorage.getItem(
+                "sfvx_watch_history"
+            );
 
-    if (!id) {
 
-        showNotification(
-            "اختر فيلمًا أولًا",
-            "error"
+        if (!saved) {
+
+            return [];
+
+        }
+
+
+        const parsed =
+            JSON.parse(saved);
+
+
+        return Array.isArray(parsed)
+            ? parsed
+            : [];
+
+    }
+
+    catch (error) {
+
+        console.warn(
+            "تعذر قراءة سجل المشاهدة:",
+            error
         );
+
+
+        return [];
+
+    }
+
+}
+
+
+
+
+/*
+==================================================
+42) حفظ سجل المشاهدة
+==================================================
+*/
+
+function saveWatchHistory(history) {
+
+    if (!Array.isArray(history)) {
+
+        history = [];
+
+    }
+
+
+    localStorage.setItem(
+
+        "sfvx_watch_history",
+
+        JSON.stringify(history)
+
+    );
+
+}
+
+
+
+
+/*
+==================================================
+43) إضافة فيلم إلى سجل المشاهدة
+==================================================
+*/
+
+function addToWatchHistory(movieId) {
+
+    const movie =
+        findMovie(movieId);
+
+
+    if (!movie) return;
+
+
+    let history =
+        getWatchHistory();
+
+
+    // حذف النسخة القديمة
+    history =
+        history.filter(
+
+            id =>
+
+                String(id) !==
+                String(movieId)
+
+        );
+
+
+    // وضع الفيلم في البداية
+    history.unshift(
+        movieId
+    );
+
+
+    // الاحتفاظ بآخر 30 فيلماً
+    history =
+        history.slice(
+            0,
+            30
+        );
+
+
+    saveWatchHistory(
+        history
+    );
+
+
+    sfvxUser.watched =
+        Math.max(
+            sfvxUser.watched,
+            0
+        );
+
+
+    saveUserData();
+
+}
+
+
+
+
+/*
+==================================================
+44) عرض سجل المشاهدة
+==================================================
+*/
+
+function renderWatchHistory() {
+
+    const container =
+        document.getElementById(
+            "history-grid"
+        );
+
+
+    if (!container) return;
+
+
+    clearContainer(
+        container
+    );
+
+
+    const history =
+        getWatchHistory();
+
+
+    const movies =
+        history
+
+            .map(id =>
+                findMovie(id)
+            )
+
+            .filter(Boolean);
+
+
+    if (!movies.length) {
+
+        container.innerHTML = `
+
+            <div class="empty-state">
+
+                <i class="fas fa-history"></i>
+
+                <h3>
+                    لا يوجد سجل مشاهدة
+                </h3>
+
+                <p>
+                    الأفلام التي تشاهدها ستظهر هنا.
+                </p>
+
+            </div>
+
+        `;
+
 
         return;
 
     }
 
 
+    appendMovies(
+        container,
+        movies
+    );
+
+}
+
+
+
+
+/*
+==================================================
+45) Continue Watching
+==================================================
+*/
+
+function getContinueWatching() {
+
+    try {
+
+        const saved =
+            localStorage.getItem(
+                "sfvx_continue_watching"
+            );
+
+
+        if (!saved) {
+
+            return [];
+
+        }
+
+
+        const parsed =
+            JSON.parse(saved);
+
+
+        if (!Array.isArray(parsed)) {
+
+            return [];
+
+        }
+
+
+        return parsed
+
+            .map(id =>
+                findMovie(id)
+            )
+
+            .filter(Boolean);
+
+    }
+
+    catch (error) {
+
+        console.warn(
+            "تعذر قراءة Continue Watching:",
+            error
+        );
+
+
+        return [];
+
+    }
+
+}
+
+
+
+
+/*
+==================================================
+46) إضافة فيلم إلى Continue Watching
+==================================================
+*/
+
+function addToContinueWatching(movieId) {
+
     const movie =
-        findMovie(id);
+        findMovie(movieId);
+
+
+    if (!movie) return;
+
+
+    let ids;
+
+
+    try {
+
+        ids =
+            JSON.parse(
+
+                localStorage.getItem(
+                    "sfvx_continue_watching"
+                )
+
+            ) || [];
+
+    }
+
+    catch {
+
+        ids = [];
+
+    }
+
+
+    if (!Array.isArray(ids)) {
+
+        ids = [];
+
+    }
+
+
+    ids =
+        ids.filter(
+
+            id =>
+
+                String(id) !==
+                String(movieId)
+
+        );
+
+
+    ids.unshift(
+        movieId
+    );
+
+
+    // آخر 12 فيلماً فقط
+    ids =
+        ids.slice(
+            0,
+            12
+        );
+
+
+    localStorage.setItem(
+
+        "sfvx_continue_watching",
+
+        JSON.stringify(ids)
+
+    );
+
+
+    renderContinueWatching();
+
+}
+
+
+
+
+/*
+==================================================
+47) عرض Continue Watching
+==================================================
+*/
+
+function renderContinueWatching() {
+
+    const container =
+        document.getElementById(
+            "continue-watching"
+        );
+
+
+    if (!container) return;
+
+
+    clearContainer(
+        container
+    );
+
+
+    const movies =
+        getContinueWatching();
+
+
+    if (!movies.length) {
+
+        container.innerHTML = `
+
+            <div class="empty-state">
+
+                <i class="fas fa-play-circle"></i>
+
+                <h3>
+                    لا يوجد محتوى للمتابعة
+                </h3>
+
+                <p>
+                    ابدأ مشاهدة أحد الأفلام
+                    وسيظهر هنا.
+                </p>
+
+            </div>
+
+        `;
+
+
+        return;
+
+    }
+
+
+    appendMovies(
+        container,
+        movies
+    );
+
+}
+
+
+
+
+/*
+==================================================
+48) فتح تفاصيل الفيلم
+==================================================
+*/
+
+function openMovieDetails(movieId) {
+
+    const movie =
+        findMovie(movieId);
+
+
+    if (!movie) {
+
+        return;
+
+    }
+
+
+    const overlay =
+        document.getElementById(
+            "movie-details-overlay"
+        );
+
+
+    if (!overlay) {
+
+        // إذا لم توجد النافذة في الصفحة
+        // نستخدم المشغل مباشرة.
+
+        playMovie(movieId);
+
+        return;
+
+    }
+
+
+    updateMovieOverlay(
+        movie
+    );
+
+
+    overlay.classList.add(
+        "active"
+    );
+
+
+    document.body.classList.add(
+        "modal-open"
+    );
+
+
+    syncSelectedMovie(
+        movie
+    );
+
+}
+
+
+
+
+/*
+==================================================
+49) تحديث نافذة التفاصيل
+==================================================
+*/
+
+function updateMovieOverlay(movie) {
+
+    if (!movie) return;
+
+
+    const title =
+        document.getElementById(
+            "overlay-movie-title"
+        );
+
+
+    const description =
+        document.getElementById(
+            "overlay-movie-description"
+        );
+
+
+    const poster =
+        document.getElementById(
+            "overlay-movie-poster"
+        );
+
+
+    const year =
+        document.getElementById(
+            "overlay-movie-year"
+        );
+
+
+    const rating =
+        document.getElementById(
+            "overlay-movie-rating"
+        );
+
+
+    const quality =
+        document.getElementById(
+            "overlay-movie-quality"
+        );
+
+
+    if (title) {
+
+        title.textContent =
+            movie.title || "بدون عنوان";
+
+    }
+
+
+    if (description) {
+
+        description.textContent =
+            movie.description ||
+            "لا يوجد وصف متاح.";
+
+    }
+
+
+    if (poster) {
+
+        poster.src =
+            movie.poster ||
+            "images/logo.png";
+
+
+        poster.onerror = () => {
+
+            poster.src =
+                "images/logo.png";
+
+        };
+
+    }
+
+
+    if (year) {
+
+        year.textContent =
+            movie.year || "----";
+
+    }
+
+
+    if (rating) {
+
+        rating.textContent =
+            Number(movie.rating || 0)
+                .toFixed(1);
+
+    }
+
+
+    if (quality) {
+
+        quality.textContent =
+            movie.quality || "HD";
+
+    }
+
+
+    updateOverlayButtons(
+        movie
+    );
+
+}
+
+
+
+
+/*
+==================================================
+50) إغلاق نافذة التفاصيل
+==================================================
+*/
+
+function closeMovieOverlay() {
+
+    const overlay =
+        document.getElementById(
+            "movie-details-overlay"
+        );
+
+
+    if (!overlay) return;
+
+
+    overlay.classList.remove(
+        "active"
+    );
+
+
+    document.body.classList.remove(
+        "modal-open"
+    );
+
+}
+
+
+
+
+/*
+==================================================
+51) تشغيل الفيلم
+==================================================
+*/
+
+function playMovie(movieId) {
+
+    const movie =
+        findMovie(movieId);
+
 
     if (!movie) {
 
         showNotification(
-            "الفيلم غير موجود",
-            "error"
+
+            "خطأ",
+
+            "لم يتم العثور على الفيلم.",
+
+            "fa-exclamation-triangle"
+
+        );
+
+
+        return;
+
+    }
+
+
+    // إضافة إلى السجل
+    addToWatchHistory(
+        movie.id
+    );
+
+
+    // إضافة إلى Continue Watching
+    addToContinueWatching(
+        movie.id
+    );
+
+
+    // مكافأة المشاهدة
+    rewardWatching(
+        movie
+    );
+
+
+    // البحث عن المشغل
+    const player =
+        document.getElementById(
+            "cinema-player"
+        );
+
+
+    if (player) {
+
+        openCinemaPlayer(
+            movie
         );
 
         return;
@@ -3258,64 +2502,438 @@ function openTrailer(movieId = null) {
     }
 
 
-    /*
-    ------------------------------------------
-    البحث عن نافذة Trailer موجودة مسبقًا
-    ------------------------------------------
-    */
+    // إذا لم يوجد المشغل
+    // نعرض رسالة مؤقتة.
 
-    let trailerOverlay =
+    showNotification(
+
+        "🎬 تشغيل الفيلم",
+
+        movie.title,
+
+        "fa-play"
+
+    );
+
+}
+
+
+
+
+/*
+==================================================
+52) فتح مشغل السينما
+==================================================
+*/
+
+function openCinemaPlayer(movie) {
+
+    if (!movie) return;
+
+
+    const player =
         document.getElementById(
-            "trailerOverlay"
+            "cinema-player"
         );
 
 
-    /*
-    ------------------------------------------
-    إذا لم تكن موجودة ننشئها
-    ------------------------------------------
-    */
+    if (!player) return;
 
-    if (!trailerOverlay) {
 
-        trailerOverlay =
+    const title =
+        player.querySelector(
+            ".player-title"
+        );
+
+
+    const poster =
+        player.querySelector(
+            ".player-poster"
+        );
+
+
+    if (title) {
+
+        title.textContent =
+            movie.title || "";
+
+    }
+
+
+    if (poster) {
+
+        poster.src =
+            movie.poster ||
+            "images/logo.png";
+
+
+        poster.onerror = () => {
+
+            poster.src =
+                "images/logo.png";
+
+        };
+
+    }
+
+
+    player.classList.add(
+        "active"
+    );
+
+
+    document.body.classList.add(
+        "modal-open"
+    );
+
+
+    // حفظ الفيلم الحالي
+    window.currentSelectedMovie =
+        movie;
+
+}
+
+
+
+
+/*
+==================================================
+53) إغلاق مشغل السينما
+==================================================
+*/
+
+function closeCinemaPlayer() {
+
+    const player =
+        document.getElementById(
+            "cinema-player"
+        );
+
+
+    if (!player) return;
+
+
+    player.classList.remove(
+        "active"
+    );
+
+
+    document.body.classList.remove(
+        "modal-open"
+    );
+
+}
+
+
+
+
+/*
+==================================================
+54) تحديث أزرار نافذة الفيلم
+==================================================
+*/
+
+function updateOverlayButtons(movie) {
+
+    if (!movie) return;
+
+
+    const favoriteButton =
+        document.querySelector(
+            "[data-overlay-favorite]"
+        );
+
+
+    if (!favoriteButton) return;
+
+
+    const favorite =
+        isFavorite(movie.id);
+
+
+    favoriteButton.classList.toggle(
+        "active",
+        favorite
+    );
+
+
+    const icon =
+        favoriteButton.querySelector(
+            "i"
+        );
+
+
+    if (icon) {
+
+        icon.classList.toggle(
+            "fas",
+            favorite
+        );
+
+
+        icon.classList.toggle(
+            "far",
+            !favorite
+        );
+
+    }
+
+}
+
+
+
+
+/*
+==================================================
+55) الفيلم المحدد حالياً
+==================================================
+*/
+
+function syncSelectedMovie(movie) {
+
+    if (!movie) return;
+
+
+    window.currentSelectedMovie =
+        movie;
+
+
+    updateOverlayButtons(
+        movie
+    );
+
+}
+
+
+
+
+/*
+==================================================
+56) إغلاق جميع النوافذ
+==================================================
+*/
+
+function closeAllMovieWindows() {
+
+    closeMovieOverlay();
+
+    closeCinemaPlayer();
+
+
+    const trailer =
+        document.getElementById(
+            "trailer-modal"
+        );
+
+
+    if (trailer) {
+
+        trailer.classList.remove(
+            "active"
+        );
+
+    }
+
+
+    document.body.classList.remove(
+        "modal-open"
+    );
+
+}
+
+
+
+
+/*
+==================================================
+57) زر الرجوع لأعلى
+==================================================
+*/
+
+function setupBackToTop() {
+
+    const button =
+        document.getElementById(
+            "back-to-top"
+        );
+
+
+    if (!button) return;
+
+
+    window.addEventListener(
+        "scroll",
+        () => {
+
+            if (window.scrollY > 500) {
+
+                button.classList.add(
+                    "active"
+                );
+
+            }
+
+            else {
+
+                button.classList.remove(
+                    "active"
+                );
+
+            }
+
+        }
+    );
+
+
+    button.addEventListener(
+        "click",
+        () => {
+
+            window.scrollTo({
+
+                top: 0,
+
+                behavior: "smooth"
+
+            });
+
+        }
+    );
+
+}
+
+/*
+==================================================
+58) نظام الـ Hero
+==================================================
+*/
+
+function renderHeroMovies() {
+
+    const container =
+        document.getElementById(
+            "hero-slider"
+        );
+
+
+    if (!container) return;
+
+
+    const movies =
+        getTopRated(5);
+
+
+    container.innerHTML = "";
+
+
+    movies.forEach(movie => {
+
+        const slide =
             document.createElement("div");
 
-        trailerOverlay.id =
-            "trailerOverlay";
 
-        trailerOverlay.className =
-            "trailer-overlay";
+        slide.className =
+            "hero-slide";
 
-        trailerOverlay.innerHTML = `
 
-            <div class="trailer-content">
+        slide.dataset.movieId =
+            movie.id;
 
-                <button
-                    type="button"
-                    class="trailer-close"
-                    aria-label="إغلاق التريلر">
 
-                    <i class="fas fa-times"></i>
+        slide.innerHTML = `
 
-                </button>
+            <div
+                class="hero-slide-background"
+                style="
+                    background-image:
+                    url('${movie.poster || "images/logo.png"}');
+                "
+            ></div>
 
-                <div class="trailer-placeholder">
 
-                    <i class="fas fa-film"></i>
+            <div class="hero-slide-content">
 
-                    <h3>
-                        Trailer
-                    </h3>
+                <span class="hero-badge">
 
-                    <p>
-                        لا يوجد رابط Trailer
-                        لهذا الفيلم حاليًا.
-                    </p>
+                    <i class="fas fa-fire"></i>
 
-                    <strong>
-                        ${movie.title}
-                    </strong>
+                    الأكثر مشاهدة
+
+                </span>
+
+
+                <h2>
+
+                    ${movie.title || "بدون عنوان"}
+
+                </h2>
+
+
+                <div class="hero-meta">
+
+                    <span>
+
+                        <i class="fas fa-star"></i>
+
+                        ${Number(movie.rating || 0).toFixed(1)}
+
+                    </span>
+
+
+                    <span>
+
+                        ${movie.year || "----"}
+
+                    </span>
+
+
+                    <span>
+
+                        ${movie.quality || "HD"}
+
+                    </span>
+
+                </div>
+
+
+                <p>
+
+                    ${
+                        movie.description ||
+                        "استمتع بمشاهدة هذا العمل داخل SFV-X."
+                    }
+
+                </p>
+
+
+                <div class="hero-actions">
+
+                    <button
+                        type="button"
+                        class="hero-play-btn"
+                        data-action="play"
+                        data-id="${movie.id}"
+                    >
+
+                        <i class="fas fa-play"></i>
+
+                        شاهد الآن
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="hero-details-btn"
+                        data-action="details"
+                        data-id="${movie.id}"
+                    >
+
+                        <i class="fas fa-info-circle"></i>
+
+                        التفاصيل
+
+                    </button>
 
                 </div>
 
@@ -3323,179 +2941,1085 @@ function openTrailer(movieId = null) {
 
         `;
 
-        document.body.appendChild(
-            trailerOverlay
+
+        container.appendChild(
+            slide
         );
+
+    });
+
+}
+
+
+
+
+/*
+==================================================
+59) Trending
+==================================================
+*/
+
+function renderTrendingMovies() {
+
+    const container =
+        document.getElementById(
+            "trending-slider"
+        );
+
+
+    if (!container) return;
+
+
+    clearContainer(
+        container
+    );
+
+
+    const movies =
+        getTopRated(10);
+
+
+    appendMovies(
+        container,
+        movies
+    );
+
+}
+
+
+
+
+/*
+==================================================
+60) أحدث الأفلام
+==================================================
+*/
+
+function renderLatestMovies() {
+
+    const container =
+        document.getElementById(
+            "latest-movies"
+        );
+
+
+    if (!container) return;
+
+
+    clearContainer(
+        container
+    );
+
+
+    const movies =
+        getLatestMovies(8);
+
+
+    appendMovies(
+        container,
+        movies
+    );
+
+}
+
+
+
+
+/*
+==================================================
+61) أحدث المسلسلات
+==================================================
+*/
+
+function renderLatestSeries() {
+
+    const container =
+        document.getElementById(
+            "latest-series"
+        );
+
+
+    if (!container) return;
+
+
+    clearContainer(
+        container
+    );
+
+
+    const movies =
+        moviesDatabase
+
+            .filter(movie => {
+
+                const type =
+                    String(
+                        movie.type || ""
+                    ).toLowerCase();
+
+
+                return (
+
+                    type === "series" ||
+
+                    type === "tv" ||
+
+                    type === "مسلسل"
+
+                );
+
+            })
+
+            .sort(
+
+                (a, b) =>
+
+                    Number(b.year || 0) -
+                    Number(a.year || 0)
+
+            )
+
+            .slice(0, 8);
+
+
+    appendMovies(
+        container,
+        movies
+    );
+
+}
+
+
+
+
+/*
+==================================================
+62) Anime
+==================================================
+*/
+
+function renderAnime() {
+
+    const container =
+        document.getElementById(
+            "anime-grid"
+        );
+
+
+    if (!container) return;
+
+
+    clearContainer(
+        container
+    );
+
+
+    const anime =
+        getMoviesByType(
+            "anime"
+        );
+
+
+    appendMovies(
+        container,
+        anime.slice(
+            0,
+            8
+        )
+    );
+
+}
+
+
+
+
+/*
+==================================================
+63) Donghua
+==================================================
+*/
+
+function renderDonghua() {
+
+    const container =
+        document.getElementById(
+            "donghua-grid"
+        );
+
+
+    if (!container) return;
+
+
+    clearContainer(
+        container
+    );
+
+
+    const donghua =
+        getMoviesByType(
+            "donghua"
+        );
+
+
+    appendMovies(
+        container,
+        donghua.slice(
+            0,
+            8
+        )
+    );
+
+}
+
+
+
+
+/*
+==================================================
+64) Cartoon / Animation
+==================================================
+*/
+
+function renderCartoon() {
+
+    const container =
+        document.getElementById(
+            "cartoon-grid"
+        );
+
+
+    if (!container) return;
+
+
+    clearContainer(
+        container
+    );
+
+
+    const cartoon =
+        moviesDatabase.filter(movie => {
+
+            const type =
+                String(
+                    movie.type || ""
+                ).toLowerCase();
+
+
+            return (
+
+                type === "cartoon" ||
+
+                type === "animation" ||
+
+                type === "animated"
+
+            );
+
+        });
+
+
+    appendMovies(
+        container,
+        cartoon.slice(
+            0,
+            8
+        )
+    );
+
+}
+
+
+
+
+/*
+==================================================
+65) الملخصات
+==================================================
+*/
+
+function renderMovieSummaries() {
+
+    const container =
+        document.getElementById(
+            "summary-grid"
+        );
+
+
+    if (!container) return;
+
+
+    clearContainer(
+        container
+    );
+
+
+    const summaries =
+        moviesDatabase.filter(movie => {
+
+            const type =
+                String(
+                    movie.type || ""
+                ).toLowerCase();
+
+
+            return (
+
+                type === "summary" ||
+
+                type === "summaries" ||
+
+                type === "ملخص"
+
+            );
+
+        });
+
+
+    appendMovies(
+        container,
+        summaries.slice(
+            0,
+            8
+        )
+    );
+
+}
+
+
+
+
+/*
+==================================================
+66) التوصيات
+==================================================
+*/
+
+function getRecommended(limit = 8) {
+
+    const favorites =
+        getFavorites();
+
+
+    const continueMovies =
+        getContinueWatching();
+
+
+    const continueIds =
+        continueMovies.map(
+            movie =>
+                String(movie.id)
+        );
+
+
+    const favoriteMovies =
+        favorites
+
+            .map(id =>
+                findMovie(id)
+            )
+
+            .filter(Boolean);
+
+
+    const favoriteCategories =
+        favoriteMovies.map(
+            movie =>
+                String(
+                    movie.category || ""
+                ).toLowerCase()
+        );
+
+
+    let recommended =
+        moviesDatabase
+
+            .filter(movie => {
+
+                if (
+                    continueIds.includes(
+                        String(movie.id)
+                    )
+                ) {
+
+                    return false;
+
+                }
+
+
+                return true;
+
+            })
+
+            .map(movie => {
+
+                let score =
+                    Number(
+                        movie.rating || 0
+                    );
+
+
+                const category =
+                    String(
+                        movie.category || ""
+                    ).toLowerCase();
+
+
+                if (
+                    favoriteCategories.includes(
+                        category
+                    )
+                ) {
+
+                    score += 3;
+
+                }
+
+
+                if (
+                    favoriteMovies.some(
+                        favorite =>
+                            favorite.type ===
+                            movie.type
+                    )
+                ) {
+
+                    score += 1;
+
+                }
+
+
+                return {
+
+                    movie,
+
+                    score
+
+                };
+
+            })
+
+            .sort(
+
+                (a, b) =>
+                    b.score -
+                    a.score
+
+            )
+
+            .map(
+                item =>
+                    item.movie
+            );
+
+
+    return recommended.slice(
+        0,
+        limit
+    );
+
+}
+
+
+
+
+/*
+==================================================
+67) عرض التوصيات
+==================================================
+*/
+
+function renderRecommended() {
+
+    const container =
+        document.getElementById(
+            "recommended-grid"
+        );
+
+
+    if (!container) return;
+
+
+    clearContainer(
+        container
+    );
+
+
+    const movies =
+        getRecommended(8);
+
+
+    appendMovies(
+        container,
+        movies
+    );
+
+}
+
+
+
+
+/*
+==================================================
+68) تشغيل Trailer
+==================================================
+*/
+
+function openTrailer(movieId) {
+
+    const movie =
+        findMovie(movieId);
+
+
+    if (!movie) return;
+
+
+    const modal =
+        document.getElementById(
+            "trailer-modal"
+        );
+
+
+    if (!modal) {
+
+        showNotification(
+
+            "Trailer",
+
+            "لا يوجد مشغل Trailer في الصفحة.",
+
+            "fa-film"
+
+        );
+
+
+        return;
 
     }
 
 
-    // إظهار التريلر
-    trailerOverlay.style.display =
-        "flex";
+    const title =
+        modal.querySelector(
+            ".trailer-title"
+        );
+
+
+    const iframe =
+        modal.querySelector(
+            "iframe"
+        );
+
+
+    if (title) {
+
+        title.textContent =
+            movie.title || "";
+
+    }
+
+
+    if (
+        iframe &&
+        movie.trailer
+    ) {
+
+        iframe.src =
+            movie.trailer;
+
+    }
+
+
+    modal.classList.add(
+        "active"
+    );
 
 
     document.body.classList.add(
-        "trailer-open"
+        "modal-open"
     );
 
+}
 
-    // زر الإغلاق
-    const closeButton =
-        trailerOverlay.querySelector(
-            ".trailer-close"
+
+
+
+/*
+==================================================
+69) إغلاق Trailer
+==================================================
+*/
+
+function closeTrailer() {
+
+    const modal =
+        document.getElementById(
+            "trailer-modal"
         );
 
 
-    if (closeButton) {
+    if (!modal) return;
 
-        closeButton.onclick =
-            closeTrailer;
+
+    const iframe =
+        modal.querySelector(
+            "iframe"
+        );
+
+
+    if (iframe) {
+
+        iframe.src = "";
 
     }
 
 
-    // إغلاق عند الضغط على الخلفية
-    trailerOverlay.onclick =
-        event => {
-
-            if (
-                event.target ===
-                trailerOverlay
-            ) {
-
-                closeTrailer();
-
-            }
-
-        };
-
-
-    showNotification(
-        `Trailer: ${movie.title}`,
-        "success"
+    modal.classList.remove(
+        "active"
     );
-
-}
-
-
-// ==========================================
-// إغلاق Trailer
-// ==========================================
-
-function closeTrailer() {
-
-    const trailerOverlay =
-        document.getElementById(
-            "trailerOverlay"
-        );
-
-    if (!trailerOverlay) return;
-
-
-    trailerOverlay.style.display =
-        "none";
 
 
     document.body.classList.remove(
-        "trailer-open"
+        "modal-open"
     );
 
 }
 
 
-// ==========================================
-// ربط زر Trailer
-// ==========================================
+
+
+/*
+==================================================
+70) تحديث كل أنظمة الفيلم
+==================================================
+*/
+
+function refreshMovieCards() {
+
+    renderDynamicMovies();
+
+    renderLatestMovies();
+
+    renderLatestSeries();
+
+    renderAnime();
+
+    renderDonghua();
+
+    renderCartoon();
+
+    renderMovieSummaries();
+
+    renderContinueWatching();
+
+    renderRecommended();
+
+    renderTrendingMovies();
+
+    renderHeroMovies();
+
+
+
+
+    updateFavoriteButtons();
+
+}
+
+
+
+
+/*
+==================================================
+71) تحديث نافذة الفيلم
+==================================================
+*/
+
+function refreshMovieOverlay() {
+
+    const movie =
+        window.currentSelectedMovie;
+
+
+    if (!movie) return;
+
+
+    updateMovieOverlay(
+        movie
+    );
+
+}
+
+
+
+
+/*
+==================================================
+72) تحديث النظام بالكامل
+==================================================
+*/
+
+function refreshMovieSystems() {
+
+    refreshMovieCards();
+
+    refreshMovieOverlay();
+
+    updatePlayerInterface();
+
+    updateContentCounter();
+
+}
+
+
+
+
+/*
+==================================================
+73) تشغيل زر البحث
+==================================================
+*/
+
+function setupSearch() {
+
+    const input =
+        document.getElementById(
+            "main-search-input"
+        );
+
+
+    if (!input) return;
+
+
+    input.addEventListener(
+        "input",
+        event => {
+
+            searchMovies(
+                event.target.value
+            );
+
+        }
+    );
+
+
+    input.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                event.preventDefault();
+
+
+                searchMovies(
+                    input.value
+                );
+
+            }
+
+        }
+    );
+
+}
+
+
+
+
+/*
+==================================================
+74) نظام الفرز
+==================================================
+*/
+
+function setupMovieSort() {
+
+    const select =
+        document.getElementById(
+            "movie-sort"
+        );
+
+
+    if (!select) return;
+
+
+    select.addEventListener(
+        "change",
+        event => {
+
+            sortMovies(
+                event.target.value
+            );
+
+        }
+    );
+
+}
+
+
+
+
+/*
+==================================================
+75) زر Load More
+==================================================
+*/
+
+function setupLoadMore() {
+
+    const trigger =
+        document.getElementById(
+            "load-more-trigger"
+        );
+
+
+    if (!trigger) return;
+
+
+    trigger.addEventListener(
+        "click",
+        event => {
+
+            event.preventDefault();
+
+
+            loadMoreMovies();
+
+        }
+    );
+
+}
+
+
+
+
+/*
+==================================================
+76) اختصار البحث
+==================================================
+*/
+
+function setupKeyboardShortcuts() {
+
+    document.addEventListener(
+        "keydown",
+        event => {
+
+            // Ctrl + /
+
+            if (
+                event.ctrlKey &&
+                event.key === "/"
+            ) {
+
+                event.preventDefault();
+
+
+                const input =
+                    document.getElementById(
+                        "main-search-input"
+                    );
+
+
+                if (input) {
+
+                    input.focus();
+
+                }
+
+            }
+
+
+            // Escape
+
+            if (
+                event.key === "Escape"
+            ) {
+
+                closeAllMovieWindows();
+
+            }
+
+        }
+    );
+
+}
+
+
+
+
+/*
+==================================================
+77) تشغيل الصفحة الرئيسية
+==================================================
+*/
+
+function initHomePage() {
+
+    currentMovies =
+        [...moviesDatabase];
+
+
+    currentPage = 1;
+
+
+    renderDynamicMovies();
+
+
+    renderHeroMovies();
+
+    renderTrendingMovies();
+
+    renderLatestMovies();
+
+    renderLatestSeries();
+
+    renderAnime();
+
+    renderDonghua();
+
+    renderCartoon();
+
+    renderMovieSummaries();
+
+    renderContinueWatching();
+
+    renderRecommended();
+
+
+    updatePlayerInterface();
+
+    updateContentCounter();
+
+    updateFavoriteButtons();
+
+
+    setupSearch();
+
+    setupMovieSort();
+
+    setupLoadMore();
+
+    setupKeyboardShortcuts();
+
+    setupMobileMenu();
+
+    setupBackToTop();
+
+    setupMovieCardEvents();
+
+}
+
+
+
+
+/*
+==================================================
+78) DOM Ready
+==================================================
+*/
 
 document.addEventListener(
     "DOMContentLoaded",
     () => {
 
-        const trailerButton =
-            document.querySelector(
-                ".trailer-btn"
-            );
-
-
-        if (trailerButton) {
-
-            trailerButton.addEventListener(
-                "click",
-                event => {
-
-                    event.preventDefault();
-
-                    openTrailer();
-
-                }
-            );
-
-        }
+        initHomePage();
 
     }
 );
 
 
-// ==========================================
-// إغلاق Trailer بواسطة ESC
-// ==========================================
-
-document.addEventListener(
-    "keydown",
-    event => {
-
-        if (
-            event.key === "Escape"
-        ) {
-
-            const trailer =
-                document.getElementById(
-                    "trailerOverlay"
-                );
-
-            if (
-                trailer &&
-                trailer.style.display ===
-                "flex"
-            ) {
-
-                closeTrailer();
-
-            }
-
-        }
-
-    }
-);
 
 
-// ==========================================
-// تحديث أزرار الـOverlay
-// ==========================================
+/*
+==================================================
+79) تصدير الدوال المهمة
+==================================================
+*/
 
-function updateOverlayButtons() {
+// جعل الدوال متاحة لباقي أجزاء الموقع.
 
-    const playButton =
-        document.querySelector(
-            ".play-now-btn"
-        );
-
-    const trailerButton =
-        document.querySelector(
-            ".trailer-btn"
-        );
+window.searchMovies =
+    searchMovies;
 
 
-    if (playButton) {
-
-        playButton.disabled =
-            !selectedMovie;
-
-    }
+window.findMovie =
+    findMovie;
 
 
-    if (trailerButton) {
+window.playMovie =
+    playMovie;
+
+
+window.openMovieDetails =
+    openMovieDetails;
+
+
+window.closeMovieOverlay =
+    closeMovieOverlay;
+
+
+window.toggleFavorite =
+    toggleFavorite;
+
+
+window.getFavorites =
+    getFavorites;
+
+
+window.addToWatchHistory =
+    addToWatchHistory;
+
+
+window.getWatchHistory =
+    getWatchHistory;
+
+
+window.getContinueWatching =
+    getContinueWatching;
+
+
+window.addToContinueWatching =
+    addToContinueWatching;
+
+
+window.renderContinueWatching =
+    renderContinueWatching;
+
+
+window.renderRecommended =
+    renderRecommended;
+
+
+window.getRecommended =
+    getRecommended;
+
+
+window.closeCinemaPlayer =
+    closeCinemaPlayer;
+
+
+window.openCinemaPlayer =
+    openCinemaPlayer;
+
+
+window.openTrailer =
+    openTrailer;
+
+
+window.closeTrailer =
+    closeTrailer;
+
+
+window.toggleNotifications =
+    toggleNotifications;
+
+
+window.toggleSidebar =
+    toggleSidebar;
+
+
+window.refreshMovieSystems =
+    refreshMovieSystems;
 
         trailerButton.disabled =
             !selectedMovie;
